@@ -1,0 +1,4 @@
+rootProject.name = 'unsafe-accessor'
+include(':accessor')
+include(':java8')
+include(':java9')

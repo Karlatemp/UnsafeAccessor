@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+}
+
+group 'io.github.karlatemp'
+version '1.0.0'
+repositories {
+    mavenCentral()
+}
+
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
