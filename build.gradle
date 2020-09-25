@@ -31,6 +31,17 @@ compileJava {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
+task sourceJar(type: Jar) {
+    archiveClassifier.set("sources")
+    from('java8/src/main/java')
+    from('java9/src/main/java')
+    from('impl8/src/main/java') {
+        exclude '**/Unsafe.java'
+    }
+    from(sourceSets.main.allSource)
+
+}
+
 bintray {
     user = project.findProperty("bintray.user") ?: System.getenv("USERNAME")
     println("user is $user")
@@ -49,10 +60,12 @@ bintray {
         }
     }
 }
+
 publishing {
     publications {
         mavenPublication(MavenPublication) {
             from(components.java)
+            artifact sourceJar
             pom {
                 name = 'Unsafe Accessor'
                 description = 'Unsafe accessing library'
