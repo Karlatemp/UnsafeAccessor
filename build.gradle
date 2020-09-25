@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.jfrog.bintray' version '1.8.5'
     id("maven-publish")
 }
 
@@ -30,20 +31,27 @@ compileJava {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/Karlatemp/UnsafeAccessor")
-            credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
-            }
+bintray {
+    user = project.findProperty("bintray.user") ?: System.getenv("USERNAME")
+    println("user is $user")
+    key = project.findProperty('bintray.key') ?: System.getenv("TOKEN")
+    publications = ['mavenPublication']
+
+    pkg {
+        repo = 'unsafe-accessor'
+        name = 'unsafe-accessor'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/Karlatemp/UnsafeAccessor.git'
+        version {
+            name = project.version
+            desc = project.version
+            released = new Date()
         }
     }
-
+}
+publishing {
     publications {
-        gpr(MavenPublication) {
+        mavenPublication(MavenPublication) {
             from(components.java)
             pom {
                 name = 'Unsafe Accessor'
