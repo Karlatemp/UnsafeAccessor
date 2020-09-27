@@ -2,15 +2,16 @@
 
 Here is a bridge to access Unsafe.
 
-## Use
-Add `https://dl.bintray.com/karlatemp/unsafe-accessor` into repositories.
+[ ![Download](https://api.bintray.com/packages/karlatemp/unsafe-accessor/unsafe-accessor/images/download.svg?version=1.1.0) ](https://bintray.com/karlatemp/unsafe-accessor/unsafe-accessor/1.1.0/link)
 
-`compile("io.github.karlatemp:unsafe-accessor:1.0.0")`
+## Use
+
+`compile("io.github.karlatemp:unsafe-accessor:1.1.0")`
 
 ```xml
 <dependency>
   <groupId>io.github.karlatemp</groupId>
   <artifactId>unsafe-accessor</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 </dependency>
 ```
