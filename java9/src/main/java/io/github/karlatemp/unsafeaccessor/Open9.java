@@ -14,7 +14,7 @@ class Open9 extends ClassLoader {
         super(Open9.class.getClassLoader());
     }
 
-    public static class Injector {
+    static class Injector {
         static {
             Class<?> klass = Injector.class;
             Module module = klass.getModule();

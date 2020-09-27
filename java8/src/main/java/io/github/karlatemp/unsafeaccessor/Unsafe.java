@@ -47,9 +47,18 @@ import java.security.ProtectionDomain;
  * @author John R. Rose
  * @see #getUnsafe
  */
-@SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted", "RedundantSuppression"})
+@SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted", "RedundantSuppression", "Since15"})
 public abstract class Unsafe {
     private static Unsafe theUnsafe;
+
+    /**
+     * is Java9+
+     *
+     * @return true if providing jdk.internal.misc.Unsafe
+     */
+    public boolean isJava9() {
+        return false;
+    }
 
     /**
      * Provides the caller with the capability of performing unsafe

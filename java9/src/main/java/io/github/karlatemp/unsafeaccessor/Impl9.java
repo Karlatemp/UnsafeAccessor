@@ -10,6 +10,10 @@ import java.security.ProtectionDomain;
 class Impl9 extends io.github.karlatemp.unsafeaccessor.Unsafe {
     private static final Unsafe usf = Unsafe.getUnsafe();
 
+    @Override
+    public boolean isJava9() {
+        return true;
+    }
 
     public int getInt(Object o, long offset) {
         return usf.getInt(o, offset);
