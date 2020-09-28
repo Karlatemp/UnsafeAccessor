@@ -1,5 +1,7 @@
 package io.github.karlatemp.unsafeaccessor;
 
+import org.jetbrains.annotations.Contract;
+
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
@@ -9,19 +11,24 @@ import java.lang.reflect.Field;
  *
  * @since 1.1.0
  */
+@SuppressWarnings("DefaultAnnotationParam")
 public class Root {
+    @Contract(pure = false)
     public static Unsafe getUnsafe() {
         return Unsafe.getUnsafe();
     }
 
+    @Contract(pure = true)
     public static MethodHandles.Lookup getTrusted() {
         return RootLookupHolder.ROOT;
     }
 
+    @Contract(pure = false, value = "null, _ -> fail")
     public static void setAccessible(AccessibleObject object, boolean isAccessible) {
         OpenAccess.openAccess(object, isAccessible);
     }
 
+    @Contract(pure = false, value = "null -> fail")
     public static <T extends AccessibleObject> T openAccess(T object) {
         setAccessible(object, true);
         return object;
@@ -75,7 +82,32 @@ public class Root {
         }
 
         static void openAccess(AccessibleObject object, boolean isAccessible) {
+            if (object == null) throw new NullPointerException("object");
             usf.putBoolean(object, overrideOffset, isAccessible);
         }
+    }
+
+    /**
+     * Throw a new exception
+     *
+     * @since 1.2.0
+     */
+    @Contract(pure = false)
+    public static <T> T throw0(Throwable throwable) {
+        if (throwable == null) throw new NullPointerException();
+        getUnsafe().throwException(throwable);
+        throw new RuntimeException();
+    }
+
+    /**
+     * Allocate a new object, but not initialized.
+     *
+     * @see Unsafe#allocateInstance(Class)
+     * @since 1.2.0
+     */
+    @SuppressWarnings("unchecked")
+    @Contract(pure = false)
+    public static <T> T allocate(Class<T> klass) throws InstantiationException {
+        return (T) getUnsafe().allocateInstance(klass);
     }
 }

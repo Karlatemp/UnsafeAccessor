@@ -26,6 +26,8 @@
 //package jdk.internal.misc;
 package io.github.karlatemp.unsafeaccessor;
 
+import org.jetbrains.annotations.Contract;
+
 import java.lang.reflect.Field;
 import java.security.ProtectionDomain;
 
@@ -47,7 +49,7 @@ import java.security.ProtectionDomain;
  * @author John R. Rose
  * @see #getUnsafe
  */
-@SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted", "RedundantSuppression", "Since15"})
+@SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted", "RedundantSuppression", "Since15", "DefaultAnnotationParam", "JavaDoc"})
 public abstract class Unsafe {
     private static Unsafe theUnsafe;
 
@@ -55,7 +57,9 @@ public abstract class Unsafe {
      * is Java9+
      *
      * @return true if providing jdk.internal.misc.Unsafe
+     * @since 1.1.0
      */
+    @Contract(pure = true)
     public boolean isJava9() {
         return false;
     }
@@ -84,6 +88,7 @@ public abstract class Unsafe {
      * <p>
      * (It may assist compilers to make the local variable {@code final}.)
      */
+    @Contract(pure = false)
     public static Unsafe getUnsafe() {
         if (theUnsafe == null) {
             return theUnsafe = (Unsafe) UsfAccessor.allocateUnsafe();
