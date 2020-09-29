@@ -22,7 +22,7 @@ dependencies {
     compileOnly project(':accessor')
     compile project(':java8')
     compile project(':java9')
-    compile fileTree(file('impl8/dist'))
+    compile fileTree(file('../impl8/dist'))
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
@@ -35,7 +35,7 @@ task sourceJar(type: Jar) {
     archiveClassifier.set("sources")
     from('java8/src/main/java')
     from('java9/src/main/java')
-    from('impl8/src/main/java') {
+    from('../impl8/src/main/java') {
         exclude '**/Unsafe.java'
     }
     from(sourceSets.main.allSource)

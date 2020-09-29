@@ -1,5 +1,5 @@
 .gradle
 .idea
 build/
-gradle.properties
+root/gradle.properties
 
