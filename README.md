@@ -2,7 +2,7 @@
 
 Here is a bridge to access Unsafe.
 
-[ ![Download](https://api.bintray.com/packages/karlatemp/unsafe-accessor/unsafe-accessor/images/download.svg?version=1.1.0) ](https://bintray.com/karlatemp/unsafe-accessor/unsafe-accessor/1.1.0/link)
+[ ![Download](https://api.bintray.com/packages/karlatemp/unsafe-accessor/unsafe-accessor/images/download.svg?) ](https://bintray.com/karlatemp/unsafe-accessor/unsafe-accessor/)
 
 ## Use
 
