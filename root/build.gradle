@@ -6,7 +6,7 @@ plugins {
 
 allprojects {
     group 'io.github.karlatemp'
-    version '1.2.0'
+    version '1.2.1'
     repositories {
         mavenCentral()
     }
@@ -23,6 +23,7 @@ dependencies {
     compile project(':java8')
     compile project(':java9')
     compile fileTree(file('../impl8/dist'))
+    compile fileTree(file('../ojdk11/dist'))
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
@@ -36,6 +37,9 @@ task sourceJar(type: Jar) {
     from('java8/src/main/java')
     from('java9/src/main/java')
     from('../impl8/src/main/java') {
+        exclude '**/Unsafe.java'
+    }
+    from('../ojdk11/src/main/java') {
         exclude '**/Unsafe.java'
     }
     from(sourceSets.main.allSource)
