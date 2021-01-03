@@ -40,24 +40,29 @@ public class Root {
         static {
             try {
                 Unsafe unsafe = getUnsafe();
-                if (unsafe.isJava9()) {
-                    MethodHandles.Lookup lookup = MethodHandles.lookup();
-                    unsafe.putReference(
-                            lookup,
-                            unsafe.objectFieldOffset(MethodHandles.Lookup.class, "lookupClass"),
-                            Object.class
-                    );
-                    unsafe.putInt(
-                            lookup,
-                            unsafe.objectFieldOffset(MethodHandles.Lookup.class, "allowedModes"),
-                            -1
-                    );
-                    ROOT = lookup;
-                } else {
+                MethodHandles.Lookup lookup;
+                try {
                     Field field = MethodHandles.Lookup.class.getDeclaredField("IMPL_LOOKUP");
-                    field.setAccessible(true);
-                    ROOT = (MethodHandles.Lookup) field.get(null);
+                    openAccess(field);
+                    lookup = (MethodHandles.Lookup) field.get(null);
+                } catch (Throwable any) {
+                    if (unsafe.isJava9()) {
+                        lookup = MethodHandles.lookup();
+                        unsafe.putReference(
+                                lookup,
+                                unsafe.objectFieldOffset(MethodHandles.Lookup.class, "lookupClass"),
+                                Object.class
+                        );
+                        unsafe.putInt(
+                                lookup,
+                                unsafe.objectFieldOffset(MethodHandles.Lookup.class, "allowedModes"),
+                                -1
+                        );
+                    } else {
+                        throw any;
+                    }
                 }
+                ROOT = lookup;
             } catch (Exception e) {
                 throw new ExceptionInInitializerError(e);
             }
