@@ -50,6 +50,10 @@ bintray {
     user = project.findProperty("bintray.user") ?: System.getenv("USERNAME")
     println("user is $user")
     key = project.findProperty('bintray.key') ?: System.getenv("TOKEN")
+
+    override = true
+    publish = true
+
     publications = ['mavenPublication']
 
     pkg {
