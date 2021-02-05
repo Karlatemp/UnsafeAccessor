@@ -7,12 +7,8 @@ Here is a bridge to access Unsafe.
 ## Use
 
 ```groovy
-repositories {
-    jcenter()
-}
-
 dependencies {
-    compile("io.github.karlatemp:unsafe-accessor:1.2.2")
+    compile("io.github.karlatemp:unsafe-accessor:1.2.3")
 }
 ```
 
@@ -20,6 +16,6 @@ dependencies {
 <dependency>
   <groupId>io.github.karlatemp</groupId>
   <artifactId>unsafe-accessor</artifactId>
-  <version>1.2.2</version>
+  <version>1.2.3</version>
 </dependency>
 ```
