@@ -38,6 +38,11 @@ public class UsfAccessor {
         System.out.println(Unsafe.getUnsafe().isJava9());
         System.out.println(Root.getTrusted());
         Method addURL = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+        System.out.println(addURL.isAccessible());
         System.out.println(Root.openAccess(addURL));
+        System.out.println(addURL.isAccessible());
+        if (!addURL.isAccessible()) {
+            throw new RuntimeException("AA");
+        }
     }
 }

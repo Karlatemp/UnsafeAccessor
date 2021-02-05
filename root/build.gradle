@@ -1,7 +1,14 @@
 plugins {
     id 'java'
+    id 'signing'
     id 'com.jfrog.bintray' version '1.8.5'
+    id 'com.bmuschko.nexus' version '2.3.1'
+    id 'io.codearte.nexus-staging' version '0.22.0'
     id("maven-publish")
+}
+
+signing {
+    useGpgCmd()
 }
 
 allprojects {
@@ -32,7 +39,7 @@ compileJava {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-task sourceJar(type: Jar) {
+task sourcesJar(type: Jar) {
     archiveClassifier.set("sources")
     from('java8/src/main/java')
     from('java9/src/main/java')
@@ -73,7 +80,7 @@ publishing {
     publications {
         mavenPublication(MavenPublication) {
             from(components.java)
-            artifact sourceJar
+            artifact sourcesJar
             pom {
                 name = 'Unsafe Accessor'
                 description = 'Unsafe accessing library'
@@ -95,4 +102,36 @@ publishing {
             }
         }
     }
+}
+
+extraArchive {
+    sources = false
+    tests = false
+    javadoc = true
+}
+
+
+modifyPom {
+    project {
+        name = 'Unsafe Accessor'
+        description = 'Unsafe accessing library'
+        url = 'https://github.com/Karlatemp/UnsafeAccessor'
+        licenses {
+            license {
+                name = 'MIT License'
+                url = 'https://spdx.org/licenses/MIT.html'
+            }
+        }
+    }
+}
+
+nexus {
+    sign = true
+    repositoryUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+    snapshotRepositoryUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
+}
+
+nexusStaging {
+    packageGroup = "io.github.karlatemp" //optional if packageGroup == project.getGroup()
+    stagingProfileId = "io.github.karlatemp" //when not defined will be got from server using "packageGroup"
 }
