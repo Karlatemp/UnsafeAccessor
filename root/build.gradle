@@ -13,7 +13,7 @@ signing {
 
 allprojects {
     group 'io.github.karlatemp'
-    version '1.2.2'
+    version '1.2.3'
     repositories {
         mavenCentral()
     }
@@ -122,6 +122,22 @@ modifyPom {
                 url = 'https://spdx.org/licenses/MIT.html'
             }
         }
+
+        scm {
+            url 'https://github.com/Karlatemp/UnsafeAccessor'
+            connection 'scm:https://github.com/Karlatemp/UnsafeAccessor.git'
+            developerConnection 'scm:git://github.com/Karlatemp/UnsafeAccessor.git'
+        }
+
+        developers {
+            developer {
+                id 'Karlatemp'
+                name 'Karlatemp'
+                email 'karlatemp@vip.qq.com'
+            }
+        }
+
+        dependencies {}
     }
 }
 
@@ -133,5 +149,5 @@ nexus {
 
 nexusStaging {
     packageGroup = "io.github.karlatemp" //optional if packageGroup == project.getGroup()
-    stagingProfileId = "io.github.karlatemp" //when not defined will be got from server using "packageGroup"
+    // stagingProfileId = "io.github.karlatemp" //when not defined will be got from server using "packageGroup"
 }
