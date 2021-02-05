@@ -2,7 +2,7 @@
 
 Here is a bridge to access Unsafe.
 
-[ ![Download](https://api.bintray.com/packages/karlatemp/unsafe-accessor/unsafe-accessor/images/download.svg?) ](https://bintray.com/karlatemp/unsafe-accessor/unsafe-accessor/)
+UnsafeAccessor is available on MavenCentral
 
 ## Use
 
