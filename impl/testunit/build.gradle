@@ -1,0 +1,132 @@
+plugins {
+    id 'java'
+    id 'io.github.karlatemp.publication-sign'
+    id("maven-publish")
+}
+
+dependencies {
+    compileOnly(project(':api'))
+
+    compile group: 'org.ow2.asm', name: 'asm', version: '9.1'
+    compile group: 'org.ow2.asm', name: 'asm-commons', version: '9.1'
+    compile group: 'org.ow2.asm', name: 'asm-util', version: '9.1'
+    compile group: 'org.ow2.asm', name: 'asm-tree', version: '9.1'
+    compile 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+
+}
+
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+def unitCounter = 0
+def registerTestUnitWith = { vmpath ->
+    def task = tasks.register("runTestUnit" + unitCounter, JavaExec) { exec ->
+        exec.group = "verification"
+
+        exec.classpath = sourceSets.main.runtimeClasspath + project(":impl.loader").tasks.getByPath("jar").outputs.files
+        main = 'runtest.RunTestUnit'
+        if (vmpath != null) {
+            exec.executable(vmpath + "/bin/java")
+            exec.doFirst {
+                println("Vm path: $vmpath")
+            }
+        }
+
+    }
+    unitCounter++
+    tasks.getByPath("doBuild").dependsOn(task)
+}
+
+task doBuild() {
+    group = 'build'
+
+    dependsOn(':impl.codegen:runCodeGen')
+    dependsOn(':impl.loader:jar')
+}
+
+registerTestUnitWith(null);
+
+({
+    def vms = file("vms.txt")
+    if (vms.isFile()) {
+        def allvm = vms.readLines()
+        for (vmpath in allvm) {
+            def p = vmpath.trim()
+            if (p.isEmpty()) continue
+            registerTestUnitWith(vmpath)
+        }
+    }
+})();
+
+
+// Publishing
+
+def rootProject0 = rootProject
+
+tasks.whenTaskAdded { task ->
+    // disable .module gen
+    if (task instanceof GenerateModuleMetadata) {
+        task.enabled = false
+    }
+}
+
+publishing {
+    repositories {
+        try {
+            property('sonatype.user')
+            property('sonatype.key')
+
+            maven { MavenArtifactRepository repo ->
+                repo.name = "MavenCentral"
+
+                repo.setUrl('https://oss.sonatype.org/service/local/staging/deploy/maven2')
+
+                repo.credentials {
+                    username(property('sonatype.user'))
+                    password(property('sonatype.key'))
+                }
+            }
+        } catch (MissingPropertyException ignored) {
+        }
+    }
+
+    publications {
+        create("ua", MavenPublication) { publication ->
+            publication.setArtifactId("unsafe-accessor")
+            publication.setGroupId("io.github.karlatemp")
+            publication.artifact(project(":impl.loader").tasks.getByName("jar"))
+            publication.artifact(project(":impl.loader").tasks.getByName("sourcesJar"))
+            publication.artifact(project(":impl.loader").tasks.getByName("javadocJar"))
+
+            publication.version = rootProject0.version
+            publication.pom { pom ->
+                pom.name = "Unsafe Accessor"
+                pom.description = rootProject0.description
+                pom.url.set('https://github.com/Karlatemp/UnsafeAccessor')
+
+                pom.scm {
+                    url.set('https://github.com/Karlatemp/UnsafeAccessor')
+                    connection.set('scm:https://github.com/Karlatemp/UnsafeAccessor.git')
+                    developerConnection.set('scm:git://github.com/Karlatemp/UnsafeAccessor.git')
+                }
+
+                pom.licenses {
+                    license {
+                        name.set('MIT License')
+                        url.set('https://spdx.org/licenses/MIT.html')
+                    }
+                }
+
+                pom.developers {
+                    developer {
+                        id.set('Karlatemp')
+                        name.set('Karlatemp')
+                        email.set('karlatemp@vip.qq.com')
+                    }
+                }
+            }
+        }
+    }
+}

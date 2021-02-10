@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+}
+
+println("JDK 9")
+
+ext.set('versionOverrided', true)
+
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_1_9
+    targetCompatibility = JavaVersion.VERSION_1_9
+    options.compilerArgs.addAll([
+            '--add-exports', 'java.base/jdk.internal.misc=ALL-UNNAMED',
+            '--add-exports', 'java.base/jdk.internal.access=ALL-UNNAMED'
+    ])
+}
+
+dependencies {
+    implementation(project(':api'))
+}

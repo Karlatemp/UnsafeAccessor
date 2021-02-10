@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id 'io.github.karlatemp.publication-sign' version '1.0.0'
+}
+
+description = "A bridge for access jdk.internal.misc.Unsafe"
+
+allprojects {
+    group 'io.github.karlatemp'
+    version '1.2.4'
+    repositories {
+        mavenCentral()
+    }
+
+
+    afterEvaluate {
+        if (project.name != 'impl.testunit') {
+            dependencies {
+                compileOnly group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
+                testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+            }
+
+            compileJava {
+                if (!project.ext.has('versionOverrided')) {
+                    println("Java 8 for ${project.name}")
+                    sourceCompatibility = JavaVersion.VERSION_1_8
+                    targetCompatibility = JavaVersion.VERSION_1_8
+                }
+            }
+
+            compileTestJava {
+                if (!project.ext.has('versionOverrided')) {
+                    sourceCompatibility = JavaVersion.VERSION_1_8
+                    targetCompatibility = JavaVersion.VERSION_1_8
+                }
+            }
+        }
+    }
+}
+
+publicationSign {
+    setupWorkflow { workflow ->
+        workflow.fastSetup("keys/key.pub", "keys/key.pri")
+    }
+}

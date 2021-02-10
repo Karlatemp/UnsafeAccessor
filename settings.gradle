@@ -1,0 +1,20 @@
+rootProject.name = 'unsafe-accessor'
+
+def includeProject = { name, path ->
+    include(name)
+    project(name).projectDir = new File(rootDir, path)
+}
+def importImpl = { name ->
+    includeProject(':impl.'+ name, 'impl/'+name)
+}
+
+include(':api')
+
+importImpl('jdk8')
+importImpl('jdk9')
+
+importImpl('codegen')
+
+importImpl('loader')
+importImpl('testunit')
+

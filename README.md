@@ -19,3 +19,27 @@ dependencies {
   <version>1.2.3</version>
 </dependency>
 ```
+
+## Build
+
+1. Clone this project
+2. Open with IDEA
+3. Select `Import Gradle Project`. Then wait...
+4. Open `Project Structure... > Project Settings > Project`.
+   Select Project SDK `JDK 9+`
+5. Open `Settings > Build, Execution, Deployment > Build Tools > Gradle`.
+   Change `Gradle JVM` to `Project JDK`
+6. Run Gradle task `:impl.testunit:doBuild`
+7. Get output artifact in `impl/loader/build/libs`
+
+
+
+
+
+
+
+
+
+
+
+
