@@ -9,7 +9,7 @@ For the test. This unit will run with finally artifact `/impl/loader/libs/unsafe
 
 Start test unit with `gradle doBuild`
 
-## That this module do
+## What this module do
 
 - Verity `Root.getTrusted()` is `/trusted`
 - Verity `Root.openAccess` working
