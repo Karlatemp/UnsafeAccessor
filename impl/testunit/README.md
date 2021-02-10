@@ -14,6 +14,7 @@ Start test unit with `gradle doBuild`
 - Verity `Root.getTrusted()` is `/trusted`
 - Verity `Root.openAccess` working
 - Verity `Unsafe.defineClass`, `Unsafe.defineClass0` working
+- Verity `Unsafe.defineAnonymousClass` working
 - Verity `Unsafe.get**`, `Unsafe.put**` working
 - Verity `Unsafe.allocateInstance` working
 - Verity `Unsafe Memory Access` working

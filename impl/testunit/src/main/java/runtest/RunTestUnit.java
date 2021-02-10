@@ -76,25 +76,35 @@ public class RunTestUnit {
             System.out.println("Checking class defining");
             ClassWriter writer1 = new ClassWriter(0),
                     writer2 = new ClassWriter(0),
-                    writer3 = new ClassWriter(0);
+                    writer3 = new ClassWriter(0),
+                    writer4 = new ClassWriter(0);
             writer1.visit(Opcodes.V1_8, 0, "testSwe/WEASawx", null, "java/lang/Object", null);
             writer2.visit(Opcodes.V1_8, 0, "testSwe/WEAS687", null, "java/lang/Object", null);
             writer3.visit(Opcodes.V1_8, 0, "testSwe/AAXWXu", null, "java/lang/Object", null);
+            writer4.visit(Opcodes.V1_8, 0, "testSwe/AWZXaex", null, "java/lang/Object", null);
 
-            byte[] code1 = writer1.toByteArray(), code2 = writer2.toByteArray(), code3 = writer3.toByteArray();
+            byte[] code1 = writer1.toByteArray();
+            byte[] code2 = writer2.toByteArray();
+            byte[] code3 = writer3.toByteArray();
+            byte[] code4 = writer4.toByteArray();
+
             ClassLoader loader = RunTestUnit.class.getClassLoader();
 
             Class<?> class1 = Unsafe.getUnsafe().defineClass(null, code1, 0, code1.length, loader, null);
             Class<?> class2 = Unsafe.getUnsafe().defineClass0(null, code2, 0, code2.length, loader, null);
             Class<?> class3 = Unsafe.getUnsafe().defineClass0(null, code3, 0, code3.length, null, null);
+            Class<?> class4 = Unsafe.getUnsafe().defineAnonymousClass(class1, code4, null);
 
             Assertions.assertEquals("testSwe.WEASawx", class1.getName());
             Assertions.assertEquals("testSwe.WEAS687", class2.getName());
             Assertions.assertEquals("testSwe.AAXWXu", class3.getName());
+            System.out.println("AnonymousClass: " + class4);
+            Assertions.assertTrue(class4.getName().contains("/"), class4.getName());
 
             Assertions.assertSame(loader, class1.getClassLoader());
             Assertions.assertSame(loader, class2.getClassLoader());
             Assertions.assertSame(null, class3.getClassLoader());
+            Assertions.assertSame(loader, class4.getClassLoader());
         }
         // endregion
 
