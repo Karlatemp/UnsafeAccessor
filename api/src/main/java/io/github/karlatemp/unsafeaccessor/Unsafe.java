@@ -29,6 +29,7 @@ package io.github.karlatemp.unsafeaccessor;
 import org.jetbrains.annotations.Contract;
 
 import java.lang.reflect.Field;
+import java.security.Permission;
 import java.security.ProtectionDomain;
 
 
@@ -47,7 +48,7 @@ import java.security.ProtectionDomain;
  * exceptions!
  *
  * @author John R. Rose
- * @see #getUnsafe
+ * @see #getUnsafe0
  */
 @SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted", "RedundantSuppression", "Since15", "DefaultAnnotationParam", "JavaDoc"})
 public abstract class Unsafe {
@@ -90,6 +91,16 @@ public abstract class Unsafe {
      */
     @Contract(pure = false)
     public static Unsafe getUnsafe() {
+        Permission p = SecurityCheck.PERMISSION_GET_UNSAFE;
+        if (p != null) {
+            SecurityManager sm = System.getSecurityManager();
+            if (sm != null) sm.checkPermission(p);
+        }
+
+        return getUnsafe0();
+    }
+
+    static Unsafe getUnsafe0() {
         if (theUnsafe == null) {
             return theUnsafe = (Unsafe) UsfAccessor.allocateUnsafe();
         }
@@ -707,55 +718,55 @@ public abstract class Unsafe {
      * The value of {@code arrayBaseOffset(boolean[].class)}
      */
     public static final int ARRAY_BOOLEAN_BASE_OFFSET
-            = getUnsafe().arrayBaseOffset(boolean[].class);
+            = getUnsafe0().arrayBaseOffset(boolean[].class);
 
     /**
      * The value of {@code arrayBaseOffset(byte[].class)}
      */
     public static final int ARRAY_BYTE_BASE_OFFSET
-            = getUnsafe().arrayBaseOffset(byte[].class);
+            = getUnsafe0().arrayBaseOffset(byte[].class);
 
     /**
      * The value of {@code arrayBaseOffset(short[].class)}
      */
     public static final int ARRAY_SHORT_BASE_OFFSET
-            = getUnsafe().arrayBaseOffset(short[].class);
+            = getUnsafe0().arrayBaseOffset(short[].class);
 
     /**
      * The value of {@code arrayBaseOffset(char[].class)}
      */
     public static final int ARRAY_CHAR_BASE_OFFSET
-            = getUnsafe().arrayBaseOffset(char[].class);
+            = getUnsafe0().arrayBaseOffset(char[].class);
 
     /**
      * The value of {@code arrayBaseOffset(int[].class)}
      */
     public static final int ARRAY_INT_BASE_OFFSET
-            = getUnsafe().arrayBaseOffset(int[].class);
+            = getUnsafe0().arrayBaseOffset(int[].class);
 
     /**
      * The value of {@code arrayBaseOffset(long[].class)}
      */
     public static final int ARRAY_LONG_BASE_OFFSET
-            = getUnsafe().arrayBaseOffset(long[].class);
+            = getUnsafe0().arrayBaseOffset(long[].class);
 
     /**
      * The value of {@code arrayBaseOffset(float[].class)}
      */
     public static final int ARRAY_FLOAT_BASE_OFFSET
-            = getUnsafe().arrayBaseOffset(float[].class);
+            = getUnsafe0().arrayBaseOffset(float[].class);
 
     /**
      * The value of {@code arrayBaseOffset(double[].class)}
      */
     public static final int ARRAY_DOUBLE_BASE_OFFSET
-            = getUnsafe().arrayBaseOffset(double[].class);
+            = getUnsafe0().arrayBaseOffset(double[].class);
 
     /**
      * The value of {@code arrayBaseOffset(Object[].class)}
      */
     public static final int ARRAY_OBJECT_BASE_OFFSET
-            = getUnsafe().arrayBaseOffset(Object[].class);
+            = getUnsafe0().arrayBaseOffset(Object[].class);
 
     /**
      * Reports the scale factor for addressing elements in the storage
@@ -775,55 +786,55 @@ public abstract class Unsafe {
      * The value of {@code arrayIndexScale(boolean[].class)}
      */
     public static final int ARRAY_BOOLEAN_INDEX_SCALE
-            = getUnsafe().arrayIndexScale(boolean[].class);
+            = getUnsafe0().arrayIndexScale(boolean[].class);
 
     /**
      * The value of {@code arrayIndexScale(byte[].class)}
      */
     public static final int ARRAY_BYTE_INDEX_SCALE
-            = getUnsafe().arrayIndexScale(byte[].class);
+            = getUnsafe0().arrayIndexScale(byte[].class);
 
     /**
      * The value of {@code arrayIndexScale(short[].class)}
      */
     public static final int ARRAY_SHORT_INDEX_SCALE
-            = getUnsafe().arrayIndexScale(short[].class);
+            = getUnsafe0().arrayIndexScale(short[].class);
 
     /**
      * The value of {@code arrayIndexScale(char[].class)}
      */
     public static final int ARRAY_CHAR_INDEX_SCALE
-            = getUnsafe().arrayIndexScale(char[].class);
+            = getUnsafe0().arrayIndexScale(char[].class);
 
     /**
      * The value of {@code arrayIndexScale(int[].class)}
      */
     public static final int ARRAY_INT_INDEX_SCALE
-            = getUnsafe().arrayIndexScale(int[].class);
+            = getUnsafe0().arrayIndexScale(int[].class);
 
     /**
      * The value of {@code arrayIndexScale(long[].class)}
      */
     public static final int ARRAY_LONG_INDEX_SCALE
-            = getUnsafe().arrayIndexScale(long[].class);
+            = getUnsafe0().arrayIndexScale(long[].class);
 
     /**
      * The value of {@code arrayIndexScale(float[].class)}
      */
     public static final int ARRAY_FLOAT_INDEX_SCALE
-            = getUnsafe().arrayIndexScale(float[].class);
+            = getUnsafe0().arrayIndexScale(float[].class);
 
     /**
      * The value of {@code arrayIndexScale(double[].class)}
      */
     public static final int ARRAY_DOUBLE_INDEX_SCALE
-            = getUnsafe().arrayIndexScale(double[].class);
+            = getUnsafe0().arrayIndexScale(double[].class);
 
     /**
      * The value of {@code arrayIndexScale(Object[].class)}
      */
     public static final int ARRAY_OBJECT_INDEX_SCALE
-            = getUnsafe().arrayIndexScale(Object[].class);
+            = getUnsafe0().arrayIndexScale(Object[].class);
 
     /**
      * Reports the size in bytes of a abstract pointer, as stored via {@link
@@ -836,7 +847,7 @@ public abstract class Unsafe {
     /**
      * The value of {@code addressSize()}
      */
-    public static final int ADDRESS_SIZE = getUnsafe().addressSize();
+    public static final int ADDRESS_SIZE = getUnsafe0().addressSize();
 
     /**
      * Reports the size in bytes of a abstract memory page (whatever that is).

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Contract;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.security.Permission;
 
 /**
  * JVM Root Access.
@@ -15,11 +16,23 @@ import java.lang.reflect.Field;
 public class Root {
     @Contract(pure = false)
     public static Unsafe getUnsafe() {
-        return Unsafe.getUnsafe();
+        Permission p = SecurityCheck.PERMISSION_GET_UNSAFE;
+        if (p != null) {
+            SecurityManager sm = System.getSecurityManager();
+            if (sm != null) sm.checkPermission(p);
+        }
+
+        return Unsafe.getUnsafe0();
     }
 
     @Contract(pure = true)
     public static MethodHandles.Lookup getTrusted() {
+        Permission p = SecurityCheck.PERMISSION_GET_UNSAFE;
+        if (p != null) {
+            SecurityManager sm = System.getSecurityManager();
+            if (sm != null) sm.checkPermission(p);
+        }
+
         return RootLookupHolder.ROOT;
     }
 
@@ -70,7 +83,7 @@ public class Root {
     }
 
     private static class OpenAccess {
-        private static final Unsafe usf = getUnsafe();
+        private static final Unsafe usf = Unsafe.getUnsafe0();
         private static final long overrideOffset;
 
         static {
@@ -88,6 +101,15 @@ public class Root {
 
         static void openAccess(AccessibleObject object, boolean isAccessible) {
             if (object == null) throw new NullPointerException("object");
+            {
+                Permission p = SecurityCheck.PERMISSION_OPEN_ACCESS;
+                if (p == null) p = SecurityCheck.PERMISSION_GET_UNSAFE;
+                if (p != null) {
+                    SecurityManager sm = System.getSecurityManager();
+                    if (sm != null) sm.checkPermission(p);
+                }
+            }
+
             usf.putBoolean(object, overrideOffset, isAccessible);
         }
     }
