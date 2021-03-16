@@ -54,6 +54,7 @@ public class RunTestUnit {
 
             Assertions.assertEquals("/trusted", Root.getTrusted().toString());
         }
+        RootMethodHandleLookupTest.run();
         // endregion
 
 

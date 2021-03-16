@@ -2,6 +2,7 @@ package io.github.karlatemp.unsafeaccessor;
 
 import org.jetbrains.annotations.Contract;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
@@ -25,6 +26,13 @@ public class Root {
         return Unsafe.getUnsafe0();
     }
 
+    /**
+     * Return the trusted lookup.
+     *
+     * Use {@link #getTrusted(Class)}
+     * @return MethodHandles.Lookup.IMPL_LOOKUP
+     */
+    @Deprecated
     @Contract(pure = true)
     public static MethodHandles.Lookup getTrusted() {
         Permission p = SecurityCheck.PERMISSION_GET_UNSAFE;
@@ -34,6 +42,13 @@ public class Root {
         }
 
         return RootLookupHolder.ROOT;
+    }
+
+    @Contract(pure = true)
+    public static MethodHandles.Lookup getTrusted(Class<?> k) {
+        //noinspection ResultOfMethodCallIgnored
+        getTrusted();
+        return RootLookupHolder.trustedIn(k);
     }
 
     @Contract(pure = false, value = "null, _ -> fail")
@@ -47,8 +62,18 @@ public class Root {
         return object;
     }
 
-    private static class RootLookupHolder {
-        private static final MethodHandles.Lookup ROOT;
+    static class RootLookupHolder {
+        static final MethodHandles.Lookup ROOT;
+
+        static boolean isOpenJ9vm() {
+            if (ROOT.lookupClass() == MethodHandle.class) {
+                return ROOT.lookupModes() == 0x40;
+            }
+            return false;
+        }
+
+        static final boolean isOpenj9;
+        static final long accessMode;
 
         static {
             try {
@@ -79,10 +104,25 @@ public class Root {
             } catch (Exception e) {
                 throw new ExceptionInInitializerError(e);
             }
+            isOpenj9 = isOpenJ9vm();
+            if (isOpenj9) {
+                accessMode = Unsafe.getUnsafe0().objectFieldOffset(MethodHandles.Lookup.class, "accessMode");
+            } else {
+                accessMode = -1;
+            }
+        }
+
+        static MethodHandles.Lookup trustedIn(Class<?> target) {
+            if (isOpenj9) {
+                MethodHandles.Lookup lookup = ROOT.in(target);
+                Unsafe.getUnsafe0().putLong(lookup, accessMode, ROOT.lookupModes());
+                return lookup;
+            }
+            return ROOT;
         }
     }
 
-    private static class OpenAccess {
+    static class OpenAccess {
         private static final Unsafe usf = Unsafe.getUnsafe0();
         private static final long overrideOffset;
 
@@ -99,8 +139,12 @@ public class Root {
             }
         }
 
-        static void openAccess(AccessibleObject object, boolean isAccessible) {
+        static void openAccess0(AccessibleObject object, boolean isAccessible) {
             if (object == null) throw new NullPointerException("object");
+            usf.putBoolean(object, overrideOffset, isAccessible);
+        }
+
+        static void openAccess(AccessibleObject object, boolean isAccessible) {
             {
                 Permission p = SecurityCheck.PERMISSION_OPEN_ACCESS;
                 if (p == null) p = SecurityCheck.PERMISSION_GET_UNSAFE;
@@ -109,8 +153,7 @@ public class Root {
                     if (sm != null) sm.checkPermission(p);
                 }
             }
-
-            usf.putBoolean(object, overrideOffset, isAccessible);
+            openAccess0(object, isAccessible);
         }
     }
 
