@@ -9,16 +9,12 @@ import java.security.Permission;
  *
  * @since 1.3.0
  */
-public final class SecurityCheck {
-    private final boolean trusted;
+public final class SecurityCheck extends ProtectedObject {
 
     SecurityCheck() {
         trusted = true;
     }
 
-    SecurityCheck(boolean trusted) {
-        this.trusted = trusted;
-    }
 
     static final SecurityCheck INSTANCE = new SecurityCheck();
     static Permission PERMISSION_GET_UNSAFE;
@@ -31,11 +27,6 @@ public final class SecurityCheck {
             if (sm != null) sm.checkPermission(p);
         }
         return INSTANCE;
-    }
-
-    private void checkTrusted() {
-        if (!trusted)
-            throw new IllegalStateException();
     }
 
     public Permission getPermission() {
