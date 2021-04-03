@@ -3,7 +3,7 @@
 `jdk.internal.misc.Unsafe` is an internal API.
 The api is different on different JDKs.
 
-This module is for verity UnsafeAccessor can run on different JDKs.
+This module is for verify UnsafeAccessor can run on different JDKs.
 
 For the test. This unit will run with finally artifact `/impl/loader/libs/unsafe-accessor.jar`.
 
@@ -11,23 +11,24 @@ Start test unit with `gradle doBuild`
 
 ## What this module do
 
-- Verity `Root.getTrusted()` is `/trusted`
-- Verity `Root.openAccess` working
-- Verity `Unsafe.defineClass`, `Unsafe.defineClass0` working
-- Verity `Unsafe.defineAnonymousClass` working
-- Verity `Unsafe.get**`, `Unsafe.put**` working
-- Verity `Unsafe.allocateInstance` working
-- Verity `Unsafe Memory Access` working
+- Verify `Root.getTrusted()` is `/trusted`
+- Verify `Root.openAccess` working
+- Verify `Unsafe.defineClass`, `Unsafe.defineClass0` working
+- Verify `Unsafe.defineAnonymousClass` working
+- Verify `Unsafe.get**`, `Unsafe.put**` working
+- Verify `Unsafe.allocateInstance` working
+- Verify `Unsafe Memory Access` working
     - `Unsafe.allocateMemory`
     - `Unsafe.setMemory`
     - `Unsafe.copyMemory`
     - `Unsafe.freeMemory`
-- Verity `Unsafe.throwException` working
-- Verity `Unsafe.ensureClassInitialized` working
-- Verity [Binary Compatibility](src/main/java/io/github/karlatemp/unsafeaccessor/BinaryCompatibilityAnalysis.java)
-    - Verity all abstract methods of `io.github.karlatemp.unsafeaccessor.Unsafe` implemented
-    - Verity not throw `NoSuchMethodError` in accessing `jdk.internal.misc.Unsafe`
+- Verify `Unsafe.throwException` working
+- Verify `Unsafe.ensureClassInitialized` working
+- Verify [Binary Compatibility](src/main/java/io/github/karlatemp/unsafeaccessor/BinaryCompatibilityAnalysis.java)
+    - Verify all abstract methods of `io.github.karlatemp.unsafeaccessor.Unsafe` implemented
+    - Verify not throw `NoSuchMethodError` in accessing `jdk.internal.misc.Unsafe`
         - `invokeCleaner(ByteBuffer)` not included. They are not defined in Java8
+- Verify `ModuleAccess` working
 
 ## Adding JDK test
 
