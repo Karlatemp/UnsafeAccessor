@@ -32,6 +32,8 @@ dependencies {
 6. Run Gradle task `:impl.testunit:doBuild`
 7. Get output artifact in `impl/loader/build/libs`
 
+# Use example
+[TestUnsafe.java](./impl/testunit/src/main/java/runtest/TestUnsafe.java)
 
 
 
