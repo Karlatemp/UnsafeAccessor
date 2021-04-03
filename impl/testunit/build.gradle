@@ -19,13 +19,29 @@ compileJava {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
+sourceSets {
+    jdk9 {
+        java {
+            compileClasspath += main.compileClasspath
+            runtimeClasspath += main.runtimeClasspath
+
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+        }
+    }
+}
+
+compileJdk9Java {
+    sourceCompatibility = JavaVersion.VERSION_1_9
+    targetCompatibility = JavaVersion.VERSION_1_9
+}
 
 def unitCounter = 0
 def registerTestUnitWith = { vmpath ->
     def task = tasks.register("runTestUnit" + unitCounter, JavaExec) { exec ->
         exec.group = "verification"
 
-        exec.classpath = sourceSets.main.runtimeClasspath + project(":impl.loader").tasks.getByPath("jar").outputs.files
+        exec.classpath = sourceSets.jdk9.runtimeClasspath + project(":impl.loader").tasks.getByPath("jar").outputs.files
         main = 'runtest.RunTestUnit'
         if (vmpath != null) {
             exec.executable(vmpath + "/bin/java")

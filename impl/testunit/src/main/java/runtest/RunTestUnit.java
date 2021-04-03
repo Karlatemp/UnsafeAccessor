@@ -109,11 +109,8 @@ public class RunTestUnit {
         }
         // endregion
 
-        // region Check Unsafe
-        {
-            TestUnsafe.runTest();
-        }
-        // endregion
+        TestUnsafe.runTest();
+        ModuleAccessTest.run();
 
         BinaryCompatibilityAnalysis.run();
     }

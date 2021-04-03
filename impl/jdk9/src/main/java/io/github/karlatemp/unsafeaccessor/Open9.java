@@ -7,10 +7,24 @@ import java.io.InputStream;
 import java.lang.reflect.Proxy;
 import java.security.AllPermission;
 import java.security.ProtectionDomain;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static io.github.karlatemp.unsafeaccessor.BytecodeUtil.replace;
 
-class Open9 extends ClassLoader {
+class Open9 extends ClassLoader implements Supplier<Object>, Consumer<Object> {
+    private static Object env = null;
+
+    @Override
+    public void accept(Object o) {
+        env = o;
+    }
+
+    @Override
+    public Object get() {
+        return env;
+    }
+
     private Open9() {
         super(Open9.class.getClassLoader());
     }
@@ -21,8 +35,11 @@ class Open9 extends ClassLoader {
             Module module = klass.getModule();
             Module open = klass.getClassLoader().getClass().getModule();
             module.addExports(klass.getPackageName(), open);
+            module.addOpens(klass.getPackageName(), open);
             JavaLangAccess javaLangAccess = SharedSecrets.getJavaLangAccess();
             javaLangAccess.addExports(Object.class.getModule(), "jdk.internal.misc", open);
+            javaLangAccess.addExports(open, "io.github.karlatemp.unsafeaccessor", module);
+            javaLangAccess.addReads(module, open);
         }
     }
 
@@ -64,27 +81,68 @@ class Open9 extends ClassLoader {
         return findClass(classpath);
     }
 
+    static Class<?> findJLMA() throws ClassNotFoundException {
+        String[] classpath = {
+                "jdk.internal.access.JavaLangModuleAccess",
+                "jdk.internal.misc.JavaLangModuleAccess",
+        };
+        return findClass(classpath);
+    }
+
+    static byte[] doRemap(
+            byte[] data,
+            Class<?>... accessClasses
+    ) {
+
+        for (Class<?> c : accessClasses) {
+            data = replace(data, "jdk/internal/access/" + c.getSimpleName(), c.getName().replace('.', '/'));
+            data = replace(data, "Ljdk/internal/access/" + c.getSimpleName() + ";", "L" + c.getName().replace('.', '/') + ";");
+            data = replace(data, "()Ljdk/internal/access/" + c.getSimpleName() + ";", "()L" + c.getName().replace('.', '/') + ";");
+        }
+        return data;
+    }
+
+
+    @SuppressWarnings("UnnecessarySemicolon")
     static Unsafe open() throws NoSuchMethodException {
         Open9 loader = new Open9();
-        try (InputStream source = Open9.class.getResourceAsStream("Open9$Injector.class")) {
-            byte[] data = source.readAllBytes();
-            Class<?> JLA = findJLA(), SS = findSS();
+        try (InputStream source = Open9.class.getResourceAsStream("Open9$Injector.class");
+             InputStream mai9 = Open9.class.getResourceAsStream("ModuleAccessImpl$JDK9.class");
+        ) {
+            byte[] data;
+            Class<?> JLA = findJLA();
+            Class<?>[] ACCESS_CLASSES = {
+                    JLA, findSS(), findJLMA()
+            };
+
             Object proxy = Proxy.newProxyInstance(loader, new Class[]{JLA}, (proxy0, method, args) -> null);
             String namespace = proxy.getClass().getPackageName();
-            String targetName = namespace + ".Injector",
-                    targetJvmName = targetName.replace('.', '/');
-            data = replace(data, "io/github/karlatemp/unsafeaccessor/Open9$Injector", targetJvmName);
-            data = replace(data, "Lio/github/karlatemp/unsafeaccessor/Open9$Injector;", "L" + targetJvmName + ";");
+            {
+                data = source.readAllBytes();
+                String targetName = namespace + ".Injector",
+                        targetJvmName = targetName.replace('.', '/');
+                data = replace(data, "io/github/karlatemp/unsafeaccessor/Open9$Injector", targetJvmName);
+                data = replace(data, "Lio/github/karlatemp/unsafeaccessor/Open9$Injector;", "L" + targetJvmName + ";");
 
-            data = replace(data, "Ljdk/internal/access/JavaLangAccess;", "L" + JLA.getName().replace('.', '/') + ";");
-            data = replace(data, "jdk/internal/access/JavaLangAccess", JLA.getName().replace('.', '/'));
-            data = replace(data, "()Ljdk/internal/access/JavaLangAccess;", "()L" + JLA.getName().replace('.', '/') + ";");
+                data = doRemap(data, ACCESS_CLASSES);
 
-            data = replace(data, "Ljdk/internal/access/SharedSecrets;", "L" + SS.getName().replace('.', '/') + ";");
-            data = replace(data, "jdk/internal/access/SharedSecrets", SS.getName().replace('.', '/'));
+                Class<?> injectorClass = loader.define(data);
+                Class.forName(injectorClass.getName(), true, loader);
+            }
+            {
+                String targetName = namespace + ".ModuleAccessImpl$JDK9",
+                        targetJvmName = targetName.replace('.', '/');
 
-            Class<?> injectorClass = loader.define(data);
-            Class.forName(injectorClass.getName(), true, loader);
+                data = mai9.readAllBytes();
+                data = replace(data, "io/github/karlatemp/unsafeaccessor/ModuleAccessImpl$JDK9", targetJvmName);
+                data = replace(data, "Lio/github/karlatemp/unsafeaccessor/ModuleAccessImpl$JDK9;", "L" + targetJvmName + ";");
+
+                data = doRemap(data, ACCESS_CLASSES);
+
+                Class.forName(loader.define(data).getName(), true, loader);
+                Root.Secret.MACCESS = (ModuleAccess) env;
+                env = null;
+            }
         } catch (Exception exception) {
             throw new ExceptionInInitializerError(exception);
         }

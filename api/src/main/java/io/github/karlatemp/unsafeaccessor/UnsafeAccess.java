@@ -58,4 +58,12 @@ public final class UnsafeAccess extends ProtectedObject {
         Root.OpenAccess.openAccess0(object, accessible);
         return object;
     }
+
+    /**
+     * @since 1.5.0
+     */
+    public ModuleAccess getModuleAccess() {
+        checkTrusted();
+        return Root.Secret.MACCESS;
+    }
 }

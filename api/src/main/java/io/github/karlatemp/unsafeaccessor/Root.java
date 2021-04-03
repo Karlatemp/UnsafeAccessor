@@ -17,13 +17,7 @@ import java.security.Permission;
 public class Root {
     @Contract(pure = false)
     public static Unsafe getUnsafe() {
-        Permission p = SecurityCheck.PERMISSION_GET_UNSAFE;
-        if (p != null) {
-            SecurityManager sm = System.getSecurityManager();
-            if (sm != null) sm.checkPermission(p);
-        }
-
-        return Unsafe.getUnsafe0();
+        return Unsafe.getUnsafe();
     }
 
     /**
@@ -157,6 +151,10 @@ public class Root {
         }
     }
 
+    static class Secret {
+        static ModuleAccess MACCESS;
+    }
+
     /**
      * Throw a new exception
      *
@@ -179,5 +177,14 @@ public class Root {
     @Contract(pure = false)
     public static <T> T allocate(Class<T> klass) throws InstantiationException {
         return (T) getUnsafe().allocateInstance(klass);
+    }
+
+    /**
+     * @since 1.5.0
+     */
+    @Contract(pure = true)
+    public static ModuleAccess getModuleAccess(){
+        getUnsafe();
+        return Secret.MACCESS;
     }
 }
