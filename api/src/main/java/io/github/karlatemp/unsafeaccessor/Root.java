@@ -6,7 +6,6 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
-import java.security.Permission;
 
 /**
  * JVM Root Access.
@@ -22,26 +21,21 @@ public class Root {
 
     /**
      * Return the trusted lookup.
-     *
+     * <p>
      * Use {@link #getTrusted(Class)}
+     *
      * @return MethodHandles.Lookup.IMPL_LOOKUP
      */
     @Deprecated
     @Contract(pure = true)
     public static MethodHandles.Lookup getTrusted() {
-        Permission p = SecurityCheck.PERMISSION_GET_UNSAFE;
-        if (p != null) {
-            SecurityManager sm = System.getSecurityManager();
-            if (sm != null) sm.checkPermission(p);
-        }
-
+        SecurityCheck.LIMITER.preGetTrustedLookup(null);
         return RootLookupHolder.ROOT;
     }
 
     @Contract(pure = true)
     public static MethodHandles.Lookup getTrusted(Class<?> k) {
-        //noinspection ResultOfMethodCallIgnored
-        getTrusted();
+        SecurityCheck.LIMITER.preGetTrustedLookup(k);
         return RootLookupHolder.trustedIn(k);
     }
 
@@ -107,6 +101,7 @@ public class Root {
         }
 
         static MethodHandles.Lookup trustedIn(Class<?> target) {
+            if (target == null) return ROOT;
             if (isOpenj9) {
                 MethodHandles.Lookup lookup = ROOT.in(target);
                 Unsafe.getUnsafe0().putLong(lookup, accessMode, ROOT.lookupModes());
@@ -139,13 +134,8 @@ public class Root {
         }
 
         static void openAccess(AccessibleObject object, boolean isAccessible) {
-            {
-                Permission p = SecurityCheck.PERMISSION_OPEN_ACCESS;
-                if (p == null) p = SecurityCheck.PERMISSION_GET_UNSAFE;
-                if (p != null) {
-                    SecurityManager sm = System.getSecurityManager();
-                    if (sm != null) sm.checkPermission(p);
-                }
+            if (isAccessible) {
+                SecurityCheck.LIMITER.preOpenAccessible(object);
             }
             openAccess0(object, isAccessible);
         }
@@ -183,7 +173,7 @@ public class Root {
      * @since 1.5.0
      */
     @Contract(pure = true)
-    public static ModuleAccess getModuleAccess(){
+    public static ModuleAccess getModuleAccess() {
         getUnsafe();
         return Secret.MACCESS;
     }

@@ -21,6 +21,7 @@ public interface ModuleAccess {
     /*ModuleDescriptor.Builder*/Object newModuleBuilder(
             String mn,
             boolean strict,
+            /*Set<ModuleDescriptor.Modifier>*/
             Set<?> ms
     );
 

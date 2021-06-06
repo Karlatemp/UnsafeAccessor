@@ -91,12 +91,7 @@ public abstract class Unsafe {
      */
     @Contract(pure = false)
     public static Unsafe getUnsafe() {
-        Permission p = SecurityCheck.PERMISSION_GET_UNSAFE;
-        if (p != null) {
-            SecurityManager sm = System.getSecurityManager();
-            if (sm != null) sm.checkPermission(p);
-        }
-
+        SecurityCheck.LIMITER.preGetUnsafe();
         return getUnsafe0();
     }
 
