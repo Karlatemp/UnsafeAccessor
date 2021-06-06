@@ -113,5 +113,24 @@ public class RunTestUnit {
         ModuleAccessTest.run();
 
         BinaryCompatibilityAnalysis.run();
+
+        {
+            Class<?> c = null;
+            try {
+                c = Class.forName("runtest.J9TestUnit");
+            } catch (ClassFormatError ignore) {
+            }
+            if (c != null) {
+                c.getDeclaredMethod("invoke").invoke(null);
+            }
+        }
+        {
+            try {
+                Class.forName("runtest.loct.Loct")
+                        .getDeclaredMethod("invoke")
+                        .invoke(null);
+            } catch (ClassNotFoundException ignore) {
+            }
+        }
     }
 }
