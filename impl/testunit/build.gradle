@@ -38,7 +38,21 @@ compileJdk9Java {
 
 def unitCounter = 0
 def registerTestUnitWith = { vmpath ->
-    def task = tasks.register("runTestUnit" + unitCounter, JavaExec) { exec ->
+    def task = tasks.register(({
+        if (vmpath != null) {
+            def type = new File(vmpath).getName()
+            def unitx = "runTestUnit" + type.capitalize()
+            def unitw = unitx
+            while (tasks.findByName(unitx) != null ) {
+                unitw = unitx + unitCounter
+                unitCounter ++
+            }
+            return unitw
+        }
+        def a = "runTestUnit" + unitCounter
+        unitCounter++
+        return a
+    })(), JavaExec) { exec ->
         exec.group = "verification"
 
         exec.classpath = sourceSets.jdk9.runtimeClasspath + project(":impl.loader").tasks.getByPath("jar").outputs.files
@@ -51,7 +65,6 @@ def registerTestUnitWith = { vmpath ->
         }
 
     }
-    unitCounter++
     tasks.getByPath("doBuild").dependsOn(task)
 }
 
