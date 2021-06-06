@@ -13,6 +13,7 @@ public class RootMethodHandleLookupTest {
 
     private static final Object finalField = null;
 
+    @TestTask
     public static void run() throws Throwable {
         MethodHandles.Lookup trusted = Root.getTrusted(RootMethodHandleLookupTest.class);
         System.out.println("Access: " + trusted.lookupModes());

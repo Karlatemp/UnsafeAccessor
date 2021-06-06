@@ -1,9 +1,16 @@
 package runtest;
 
+import io.github.karlatemp.unsafeaccessor.Root;
 import io.github.karlatemp.unsafeaccessor.Unsafe;
 import org.junit.jupiter.api.Assertions;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 @SuppressWarnings("DuplicatedCode")
 public class TestUnsafe {
@@ -37,6 +44,7 @@ public class TestUnsafe {
         }
     }
 
+    @TestTask
     public static void runTest() throws Throwable {
         System.out.println("Invoking Unsafe Test Unit....");
 
@@ -384,5 +392,75 @@ public class TestUnsafe {
             Assertions.assertTrue(TestClassInitialize.initialized);
         }
         // endregion
+    }
+
+    @SuppressWarnings("deprecation")
+    @TestTask(name = "check Root.getTrusted()")
+    public static void checkTrusted() {
+        // region check Root.getTrusted()
+        String toString = Root.getTrusted().toString();
+        if (toString.equals("/trusted")) {
+            return;
+        }
+
+        // AdoptOpenJDK - jdk 11.0.9.11 openj9
+        if (Root.getTrusted().lookupClass() == MethodHandle.class) {
+            if (Root.getTrusted().lookupModes() == 0x40) {
+                if (toString.equals("java.lang.invoke.MethodHandle")) {
+                    return;
+                }
+            }
+        }
+
+        Assertions.assertEquals("/trusted", Root.getTrusted().toString());
+        // endregion
+    }
+
+    @SuppressWarnings("deprecation")
+    @TestTask(name = "check set accessible")
+    public static void checkSetAccessible() throws Exception {
+        System.out.println("Checking AccessibleObject.setAccessible");
+        Method addURL = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+        System.out.println(addURL.isAccessible());
+        Assertions.assertFalse(addURL.isAccessible());
+        System.out.println(Root.openAccess(addURL));
+        System.out.println(addURL.isAccessible());
+        Assertions.assertTrue(addURL.isAccessible());
+    }
+
+    @TestTask(name = "check Unsafe.defineClass")
+    public static void testDefineClass() throws Exception {
+        System.out.println("Checking class defining");
+        ClassWriter writer1 = new ClassWriter(0),
+                writer2 = new ClassWriter(0),
+                writer3 = new ClassWriter(0),
+                writer4 = new ClassWriter(0);
+        writer1.visit(Opcodes.V1_8, 0, "testSwe/WEASawx", null, "java/lang/Object", null);
+        writer2.visit(Opcodes.V1_8, 0, "testSwe/WEAS687", null, "java/lang/Object", null);
+        writer3.visit(Opcodes.V1_8, 0, "testSwe/AAXWXu", null, "java/lang/Object", null);
+        writer4.visit(Opcodes.V1_8, 0, "testSwe/AWZXaex", null, "java/lang/Object", null);
+
+        byte[] code1 = writer1.toByteArray();
+        byte[] code2 = writer2.toByteArray();
+        byte[] code3 = writer3.toByteArray();
+        byte[] code4 = writer4.toByteArray();
+
+        ClassLoader loader = RunTestUnit.class.getClassLoader();
+
+        Class<?> class1 = Unsafe.getUnsafe().defineClass(null, code1, 0, code1.length, loader, null);
+        Class<?> class2 = Unsafe.getUnsafe().defineClass0(null, code2, 0, code2.length, loader, null);
+        Class<?> class3 = Unsafe.getUnsafe().defineClass0(null, code3, 0, code3.length, null, null);
+        Class<?> class4 = Unsafe.getUnsafe().defineAnonymousClass(class1, code4, null);
+
+        Assertions.assertEquals("testSwe.WEASawx", class1.getName());
+        Assertions.assertEquals("testSwe.WEAS687", class2.getName());
+        Assertions.assertEquals("testSwe.AAXWXu", class3.getName());
+        System.out.println("AnonymousClass: " + class4);
+        Assertions.assertTrue(class4.getName().contains("/"), class4.getName());
+
+        Assertions.assertSame(loader, class1.getClassLoader());
+        Assertions.assertSame(loader, class2.getClassLoader());
+        Assertions.assertSame(null, class3.getClassLoader());
+        Assertions.assertSame(loader, class4.getClassLoader());
     }
 }

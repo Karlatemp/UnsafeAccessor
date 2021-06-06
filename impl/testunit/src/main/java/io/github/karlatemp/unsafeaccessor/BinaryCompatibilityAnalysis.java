@@ -5,6 +5,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
+import runtest.TestTask;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandleInfo;
@@ -40,6 +41,9 @@ public class BinaryCompatibilityAnalysis {
         return hasAnnotation(node, type.getName().replace('.', '/'));
     }
 
+    @TestTask(
+            hiddenOutput = true
+    )
     public static void run() throws Throwable {
         System.out.println("Analysing Unsafe BinaryCompatibility");
         List<MethodNode> methods = new ArrayList<>();

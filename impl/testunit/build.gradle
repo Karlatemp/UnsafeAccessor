@@ -43,9 +43,9 @@ def registerTestUnitWith = { vmpath ->
             def type = new File(vmpath).getName()
             def unitx = "runTestUnit" + type.capitalize()
             def unitw = unitx
-            while (tasks.findByName(unitx) != null ) {
+            while (tasks.findByName(unitx) != null) {
                 unitw = unitx + unitCounter
-                unitCounter ++
+                unitCounter++
             }
             return unitw
         }
@@ -57,6 +57,8 @@ def registerTestUnitWith = { vmpath ->
 
         exec.classpath = sourceSets.jdk9.runtimeClasspath + project(":impl.loader").tasks.getByPath("jar").outputs.files
         main = 'runtest.RunTestUnit'
+        exec.environment('taskUnitName', exec.name)
+        exec.environment('writeToFile', rootProject.hasProperty("writeToFile"))
         if (vmpath != null) {
             exec.executable(vmpath + "/bin/java")
             exec.doFirst {
