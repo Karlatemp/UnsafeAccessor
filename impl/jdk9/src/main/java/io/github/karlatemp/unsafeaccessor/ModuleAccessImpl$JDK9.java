@@ -9,12 +9,28 @@ import java.net.URI;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 class ModuleAccessImpl$JDK9 implements ModuleAccess {
+    private static Object EVERYONE_MODULE;
+    private static Object ALL_UNNAMED_MODULE;
+    private static final Supplier<UnsafeAccess> SUPPLIER;
+
+    private static Object findModule(String name) {
+        try {
+            return (Module) SUPPLIER.get().getTrustedIn(Module.class)
+                    .findStaticGetter(Module.class, name, Module.class)
+                    .invoke();
+        } catch (Throwable throwable) {
+            return throwable;
+        }
+    }
+
     static {
-        ((Consumer<Object>) ModuleAccessImpl$JDK9.class.getClassLoader())
-                .accept(new ModuleAccessImpl$JDK9());
+        ClassLoader classLoader = ModuleAccessImpl$JDK9.class.getClassLoader();
+        SUPPLIER = (Supplier<UnsafeAccess>) ((Supplier) classLoader).get();
+        ((Consumer<Object>) classLoader).accept(new ModuleAccessImpl$JDK9());
     }
 
     @Override
@@ -28,6 +44,26 @@ class ModuleAccessImpl$JDK9 implements ModuleAccess {
     @Override
     public Object getModule(Class<?> klass) {
         return klass.getModule();
+    }
+
+    @Override
+    public Object getALL_UNNAMED_MODULE() {
+        if (ALL_UNNAMED_MODULE == null) {
+            ALL_UNNAMED_MODULE = findModule("ALL_UNNAMED_MODULE");
+        }
+        if (ALL_UNNAMED_MODULE instanceof Throwable)
+            throw new UnsupportedOperationException((Throwable) ALL_UNNAMED_MODULE);
+        return ALL_UNNAMED_MODULE;
+    }
+
+    @Override
+    public Object getEVERYONE_MODULE() {
+        if (EVERYONE_MODULE == null) {
+            EVERYONE_MODULE = findModule("EVERYONE_MODULE");
+        }
+        if (EVERYONE_MODULE instanceof Throwable)
+            throw new UnsupportedOperationException((Throwable) EVERYONE_MODULE);
+        return EVERYONE_MODULE;
     }
 
     @Override

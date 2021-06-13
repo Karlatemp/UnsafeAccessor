@@ -138,6 +138,7 @@ class Open9 extends ClassLoader implements Supplier<Object>, Consumer<Object> {
                 data = replace(data, "Lio/github/karlatemp/unsafeaccessor/ModuleAccessImpl$JDK9;", "L" + targetJvmName + ";");
 
                 data = doRemap(data, ACCESS_CLASSES);
+                env = (Supplier) () -> UnsafeAccess.INSTANCE;
 
                 Class.forName(loader.define(data).getName(), true, loader);
                 Root.Secret.MACCESS = (ModuleAccess) env;

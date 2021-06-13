@@ -17,6 +17,16 @@ class ModuleAccessImpl {
         }
 
         @Override
+        public Object getEVERYONE_MODULE() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Object getALL_UNNAMED_MODULE() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
         public Package definePackage(ClassLoader cl, String name, Object module) {
             throw new UnsupportedOperationException();
         }
@@ -81,6 +91,16 @@ class ModuleAccessImpl {
         @Override
         public boolean isSupport() {
             return false;
+        }
+
+        @Override
+        public Object getEVERYONE_MODULE() {
+            return null;
+        }
+
+        @Override
+        public Object getALL_UNNAMED_MODULE() {
+            return null;
         }
 
         @Override

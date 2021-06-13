@@ -14,6 +14,24 @@ public interface ModuleAccess {
     boolean isSupport();
 
     /**
+     * special Module to mean "everyone"
+     * <p>
+     * Only used for {@link #addExports(Object, String, Object)}, {@link #addOpens(Object, String, Object)}
+     *
+     * @since 1.6.0
+     */
+    Object getEVERYONE_MODULE();
+
+    /**
+     * special Module to mean "all unnamed modules"
+     * <p>
+     * Only used for {@link #addExports(Object, String, Object)}, {@link #addOpens(Object, String, Object)}
+     *
+     * @since 1.6.0
+     */
+    Object getALL_UNNAMED_MODULE();
+
+    /**
      * klass.getModule()
      */
     Object getModule(Class<?> klass);

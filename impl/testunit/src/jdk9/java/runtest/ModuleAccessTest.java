@@ -43,4 +43,72 @@ public class ModuleAccessTest {
         }
 
     }
+
+    @TestTask(name = "test methods")
+    public static void testMethods() {
+        ModuleAccess access = Root.getModuleAccess();
+        Unsafe usf = Unsafe.getUnsafe();
+
+        ClassLoader cl = ModuleAccessTest.class.getClassLoader();
+        ModuleDescriptor.Builder moduleBuilder = (ModuleDescriptor.Builder) access.newModuleBuilder(
+                "asra.xatafaser.azxarmoivdsoijzoijfoijdsjoi",
+                false,
+                Set.of()
+        );
+        String pkg = "aoiroiasjria.sdaiorjaoica.ar3094ksdaxapkfrafdasd.asejmaodh";
+        moduleBuilder.packages(Set.of(pkg));
+        Module module = (Module) access.defineModule(cl, moduleBuilder.build(), null);
+
+        Module m1 = ModuleAccessTest.class.getModule();
+
+        Assertions.assertFalse(module.isExported(pkg));
+        Assertions.assertFalse(module.isOpen(pkg));
+
+        Assertions.assertFalse(module.isExported(pkg, m1));
+        Assertions.assertFalse(module.isOpen(pkg, m1));
+
+        access.addExports(module, pkg, m1);
+
+        Assertions.assertTrue(module.isExported(pkg, m1));
+        Assertions.assertFalse(module.isOpen(pkg, m1));
+
+        access.addOpens(module, pkg, m1);
+
+        Assertions.assertTrue(module.isExported(pkg, m1));
+        Assertions.assertTrue(module.isOpen(pkg, m1));
+
+        Assertions.assertFalse(module.isExported(pkg));
+        Assertions.assertFalse(module.isOpen(pkg));
+
+        Module newUm = (Module) access.defineUnnamedModule(cl);
+
+
+        Assertions.assertFalse(module.isExported(pkg, newUm));
+        Assertions.assertFalse(module.isOpen(pkg, newUm));
+
+        access.addExportsToAllUnnamed(module, pkg);
+
+        Assertions.assertTrue(module.isExported(pkg, newUm));
+        Assertions.assertFalse(module.isOpen(pkg, newUm));
+
+        access.addOpensToAllUnnamed(module, pkg);
+
+        Assertions.assertTrue(module.isExported(pkg, newUm));
+        Assertions.assertTrue(module.isOpen(pkg, newUm));
+
+        Module jl = java.util.logging.Logger.class.getModule();
+
+
+        Assertions.assertFalse(module.isExported(pkg, jl));
+        Assertions.assertFalse(module.isOpen(pkg, jl));
+
+        access.addExports(module, pkg, access.getEVERYONE_MODULE());
+        Assertions.assertTrue(module.isExported(pkg, jl));
+        Assertions.assertFalse(module.isOpen(pkg, jl));
+
+        access.addOpens(module, pkg, access.getEVERYONE_MODULE());
+        Assertions.assertTrue(module.isExported(pkg, jl));
+        Assertions.assertTrue(module.isOpen(pkg, jl));
+
+    }
 }

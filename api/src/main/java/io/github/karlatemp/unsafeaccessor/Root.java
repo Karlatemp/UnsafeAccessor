@@ -6,6 +6,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.util.function.Consumer;
 
 /**
  * JVM Root Access.
@@ -176,5 +177,29 @@ public class Root {
     public static ModuleAccess getModuleAccess() {
         getUnsafe();
         return Secret.MACCESS;
+    }
+
+    static class ObjectInitializer {
+        static Consumer<Object> initializer;
+
+        static Consumer<Object> initializer() {
+            if (initializer != null) return initializer;
+            synchronized (ObjectInitializer.class) {
+                if (initializer != null) return initializer;
+                initializer = UsfAccessor.allocateObjectInitializer();
+            }
+            return initializer;
+        }
+    }
+
+    /**
+     * Do nothing
+     *
+     * @since 1.6.0
+     */
+    public static void initializeObject(Object instance) {
+        if (instance == null) return;
+        Unsafe.getUnsafe0().ensureClassInitialized(instance.getClass());
+        ObjectInitializer.initializer().accept(instance);
     }
 }

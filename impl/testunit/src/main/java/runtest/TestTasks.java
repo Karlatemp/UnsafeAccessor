@@ -401,12 +401,14 @@ class TestTasks {
         System.setErr(standardError);
 
         DumpOptions options = new DumpOptions();
-        options.throwExceptionOnFailure = false;
+        boolean dump = Boolean.parseBoolean(System.getenv("writeToFile"));
+        options.throwExceptionOnFailure = !dump;
         options.noException = false;
         options.noRawOutput = false;
         dump(root, standardOutput, options);
 
-        if (Boolean.parseBoolean(System.getenv("writeToFile"))) {
+        if (dump) {
+            options.throwExceptionOnFailure = true;
             File runInfo = new File("build/run-unit-response.txt");
             try (PrintStream ps = new PrintStream(new BufferedOutputStream(
                     new FileOutputStream(runInfo, true)
