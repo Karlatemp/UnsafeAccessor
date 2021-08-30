@@ -7,7 +7,7 @@ description = "A bridge for access jdk.internal.misc.Unsafe"
 
 allprojects {
     group 'io.github.karlatemp'
-    version '1.6.0'
+    version '1.6.1'
     repositories {
         mavenCentral()
     }

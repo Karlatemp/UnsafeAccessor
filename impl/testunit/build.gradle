@@ -122,7 +122,7 @@ publishing {
             maven { MavenArtifactRepository repo ->
                 repo.name = "MavenCentral"
 
-                repo.setUrl('https://oss.sonatype.org/service/local/staging/deploy/maven2')
+                repo.setUrl('https://s01.oss.sonatype.org/service/local/staging/deploy/maven2')
 
                 repo.credentials {
                     username(property('sonatype.user'))
