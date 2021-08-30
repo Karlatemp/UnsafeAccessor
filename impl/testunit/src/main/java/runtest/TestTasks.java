@@ -1,5 +1,12 @@
 package runtest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import io.github.karlatemp.unsafeaccessor.Root;
 import io.github.karlatemp.unsafeaccessor.Unsafe;
 import org.objectweb.asm.ClassReader;
@@ -14,6 +21,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -93,6 +101,10 @@ class TestTasks {
 
         int pointer() {
             return this.count;
+        }
+
+        String toStrUtf8() {
+            return new String(buf, 0, count, StandardCharsets.UTF_8);
         }
     }
 
@@ -181,6 +193,24 @@ class TestTasks {
         boolean throwExceptionOnFailure;
         boolean echoExceptionAlways;
         boolean echoOutputAlways;
+    }
+
+    abstract static class WriteOnlyTypeAdapter<T> extends TypeAdapter<T> {
+        @Override
+        public void write(JsonWriter out, T value) throws IOException {
+            if (value == null) {
+                out.nullValue();
+                return;
+            }
+            write0(out, value);
+        }
+
+        protected abstract void write0(JsonWriter out, T value) throws IOException;
+
+        @Override
+        public T read(JsonReader in) throws IOException {
+            throw new IOException("STUB");
+        }
     }
 
     static void dump(RunResponse response, PrintStream out, DumpOptions options) {
@@ -325,6 +355,10 @@ class TestTasks {
             Class<?> klass;
             try {
                 klass = Class.forName(task);
+                TestTask testTask = klass.getDeclaredAnnotation(TestTask.class);
+                if (testTask != null) {
+                    unitResponse.name = testTask.name();
+                }
             } catch (ClassFormatError e) {
                 unitResponse.exception = e;
                 unitResponse.status = RunResponse.Status.NOT_EXECUTED;
@@ -408,17 +442,49 @@ class TestTasks {
         dump(root, standardOutput, options);
 
         if (dump) {
-            options.throwExceptionOnFailure = true;
-            File runInfo = new File("build/run-unit-response.txt");
-            try (PrintStream ps = new PrintStream(new BufferedOutputStream(
-                    new FileOutputStream(runInfo, true)
-            ), false, "UTF8")) {
-                ps.println("Gradle task: " + RunTestUnit.taskUnitName);
-                ps.println();
-                dump(root, ps, options);
-                ps.println();
-                ps.println("===============================================");
-                ps.println();
+            File dir = new File("build/run-unit-response");
+            File runInfo;
+            if (!dir.isDirectory()) {
+                dir.mkdirs();
+            }
+            runInfo = new File(dir, RunTestUnit.taskUnitName + ".json");
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapterFactory(new TypeAdapterFactory() {
+                        @Override
+                        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+                            if (Throwable.class.isAssignableFrom(type.getRawType())) {
+                                return new WriteOnlyTypeAdapter<T>() {
+                                    @Override
+                                    public void write0(JsonWriter out, T value) throws IOException {
+                                        StringWriter writer = new StringWriter();
+                                        PrintWriter pw = new PrintWriter(writer);
+                                        ((Throwable) value).printStackTrace(pw);
+                                        pw.flush();
+                                        out.value(writer.toString());
+                                    }
+                                };
+                            }
+                            if (AccessibleBAOS.class.isAssignableFrom(type.getRawType())) {
+                                return new WriteOnlyTypeAdapter<T>() {
+                                    @Override
+                                    public void write0(JsonWriter out, T value) throws IOException {
+                                        out.value(((AccessibleBAOS) value).toStrUtf8());
+                                    }
+                                };
+                            }
+                            return null;
+                        }
+                    })
+                    // .setPrettyPrinting()
+                    .disableHtmlEscaping()
+                    .create();
+
+            try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(runInfo),
+                    StandardCharsets.UTF_8
+            ))) {
+                root.name = RunTestUnit.taskUnitName;
+                gson.toJson(root, writer);
             }
         }
     }

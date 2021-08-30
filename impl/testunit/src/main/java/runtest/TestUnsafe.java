@@ -405,7 +405,8 @@ public class TestUnsafe {
 
         // AdoptOpenJDK - jdk 11.0.9.11 openj9
         if (Root.getTrusted().lookupClass() == MethodHandle.class) {
-            if (Root.getTrusted().lookupModes() == 0x40) {
+            int modes = Root.getTrusted().lookupModes();
+            if (modes == 0x40 || modes == 0x80) {
                 if (toString.equals("java.lang.invoke.MethodHandle")) {
                     return;
                 }

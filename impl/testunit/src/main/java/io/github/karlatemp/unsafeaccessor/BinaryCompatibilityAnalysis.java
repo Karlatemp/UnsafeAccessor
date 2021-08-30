@@ -16,6 +16,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+@TestTask(name = "BinaryCompatibilityAnalysis")
 public class BinaryCompatibilityAnalysis {
     public static boolean hasAnnotation(List<AnnotationNode> nodes, String type) {
         if (nodes == null || nodes.isEmpty()) return false;
