@@ -56,7 +56,10 @@ public class Root {
 
         static boolean isOpenJ9vm() {
             if (ROOT.lookupClass() == MethodHandle.class) {
-                return ROOT.lookupModes() == 0x40;
+                int modes = ROOT.lookupModes();
+                return modes == 0x40 // AdoptOpenJDK - jdk 11.0.9.11 openj9
+                        || modes == 0x80 // Eclipse OpenJ9 VM - 11.0.12.7-openj9
+                        ;
             }
             return false;
         }
