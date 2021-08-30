@@ -64,6 +64,7 @@ public final class UnsafeAccess extends ProtectedObject {
      */
     public ModuleAccess getModuleAccess() {
         checkTrusted();
+        Unsafe.getUnsafe0();
         return Root.Secret.MACCESS;
     }
 }
