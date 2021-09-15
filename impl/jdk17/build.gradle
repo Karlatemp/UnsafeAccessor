@@ -3,13 +3,13 @@ plugins {
     id 'java-library'
 }
 
-println("JDK 9")
+println("JDK 17")
 
 ext.set('versionOverrided', true)
 
 compileJava {
-    sourceCompatibility = JavaVersion.VERSION_1_9
-    targetCompatibility = JavaVersion.VERSION_1_9
+    sourceCompatibility = JavaVersion.VERSION_16
+    targetCompatibility = JavaVersion.VERSION_16
     options.compilerArgs.addAll([
             '--add-exports', 'java.base/jdk.internal.misc=ALL-UNNAMED',
             '--add-exports', 'java.base/jdk.internal.access=ALL-UNNAMED'
@@ -17,5 +17,5 @@ compileJava {
 }
 
 dependencies {
-    api(project(':impl.jdk8'))
+    api(project(':impl.jdk9'))
 }

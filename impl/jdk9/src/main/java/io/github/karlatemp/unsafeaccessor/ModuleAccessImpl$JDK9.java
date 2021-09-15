@@ -124,7 +124,9 @@ class ModuleAccessImpl$JDK9 implements ModuleAccess {
 
     @Override
     public void addOpensToAllUnnamed(Object m, Iterator<String> packages) {
-        JLA.addOpensToAllUnnamed((Module) m, packages);
+        while (packages.hasNext()) {
+            JLA.addOpensToAllUnnamed((Module) m, packages.next());
+        }
     }
 
     @Override

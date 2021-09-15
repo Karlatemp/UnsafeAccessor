@@ -52,7 +52,8 @@ import java.security.ProtectionDomain;
  */
 @SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted", "RedundantSuppression", "Since15", "DefaultAnnotationParam", "JavaDoc"})
 public abstract class Unsafe {
-    private static Unsafe theUnsafe;
+    static Unsafe theUnsafe;
+    static final Unsafe INSTANCE = getUnsafe0();
 
     /**
      * is Java9+
@@ -92,12 +93,12 @@ public abstract class Unsafe {
     @Contract(pure = false)
     public static Unsafe getUnsafe() {
         SecurityCheck.LIMITER.preGetUnsafe();
-        return getUnsafe0();
+        return INSTANCE;
     }
 
     static Unsafe getUnsafe0() {
         if (theUnsafe == null) {
-            return theUnsafe = (Unsafe) UsfAccessor.allocateUnsafe();
+            UsfAccessor.initialize();
         }
         return theUnsafe;
     }

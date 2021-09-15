@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 // internal
 public class UsfAccessor {
     static abstract class UsfAccessorSpi {
-        abstract Object allocateUnsafe();
+        abstract void initialize();
 
         abstract Consumer<Object> allocateObjectInitializer();
     }
@@ -27,8 +27,8 @@ public class UsfAccessor {
     }
 
     // Internal service for load Unsafe.
-    protected static Object allocateUnsafe() {
-        return spi().allocateUnsafe();
+    protected static void initialize() {
+        spi().initialize();
     }
 
     protected static Consumer<Object> allocateObjectInitializer() {

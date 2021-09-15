@@ -7,19 +7,83 @@ import java.util.function.Consumer;
 
 @SuppressWarnings("unchecked")
 class UsfAccessorImpl extends UsfAccessor.UsfAccessorSpi {
-    Object allocateUnsafe() {
+
+    static class UsfACtxImpl extends UsfAllocCtx {
+        @Override
+        Unsafe newUsfImpl(UsfAlloc alloc) throws Exception {
+            return (Unsafe) newUsf(alloc);
+        }
+
+        Object newUsf(UsfAlloc alloc) throws Exception {
+            if (alloc instanceof UsfAllocImpl8) {
+                return new SunMiscUnsafeImpl();
+            }
+            return newUsf9(alloc);
+        }
+
+        @SuppressWarnings("SwitchStatementWithTooFewBranches")
+        Object newUsf9(UsfAlloc $$$$$$$$$$$$$$$$) throws Exception {
+            UsfAllocImpl9 alloc = (UsfAllocImpl9) $$$$$$$$$$$$$$$$;
+            boolean isGetObj;
+            try {
+                alloc.usfClass().getMethod("getObject", Object.class, long.class);
+                isGetObj = true;
+            } catch (NoSuchMethodException ignored) {
+                isGetObj = false;
+            }
+
+            String cname = alloc.getClass().getSimpleName();
+            String sname = null;
+            switch (cname) {
+                case "UsfAllocImpl17":
+                    return new UsfImpl17();
+                default:
+                    return isGetObj ? new Impl9Obj() : new Impl9();
+            }
+        }
+
+    }
+
+    static UsfAlloc findImpl9() {
+        ExceptionInInitializerError e = new ExceptionInInitializerError("no any provider found");
+        for (String k : new String[]{
+                "17",
+                "9",
+                "8",
+        }) {
+            try {
+                UsfAlloc alloc = Class.forName("io.github.karlatemp.unsafeaccessor.UsfAllocImpl" + k)
+                        .asSubclass(UsfAlloc.class)
+                        .getDeclaredConstructor()
+                        .newInstance()
+                        .checkSelectedRequirement();
+                if (alloc != null) return alloc;
+            } catch (Throwable ex) {
+                e.addSuppressed(ex);
+            }
+        }
+        throw e;
+    }
+
+    void initialize() {
+        Root.Secret.MACCESS = new ModuleAccessImpl.PendingInit();
+        UsfAlloc alloc;
         try {
             Class.forName("java.lang.Module");
-            Root.Secret.MACCESS = new ModuleAccessImpl.PendingInit();
-
-            try {
-                return Open9.open();
-            } catch (NoSuchMethodException ignored) {
-                return new Impl9Obj();
-            }
+            alloc = findImpl9();
         } catch (ClassNotFoundException ignored) {
-            Root.Secret.MACCESS = new ModuleAccessImpl.Noop();
-            return new SunMiscUnsafeImpl();
+            alloc = new UsfAllocImpl8();
+        }
+        try {
+            UsfAllocCtx ctx = new UsfACtxImpl();
+            alloc.prepare(ctx);
+            alloc.destroyLimit(ctx);
+
+            ctx.putUnsafeInstance(alloc.newUnsafe(ctx));
+
+            ctx.putModuleAccess(alloc.newModuleAccess(ctx));
+        } catch (Throwable throwable) {
+            throw new ExceptionInInitializerError(throwable);
         }
     }
 

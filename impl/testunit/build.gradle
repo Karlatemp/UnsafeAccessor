@@ -2,20 +2,21 @@ plugins {
     id 'java'
     id 'io.github.karlatemp.publication-sign'
     id("maven-publish")
+    id 'java-library'
 }
 
 dependencies {
     compileOnly(project(':api'))
 
-    compile group: 'org.ow2.asm', name: 'asm', version: '9.1'
-    compile group: 'org.ow2.asm', name: 'asm-commons', version: '9.1'
-    compile group: 'org.ow2.asm', name: 'asm-util', version: '9.1'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '9.1'
-    compile 'com.google.code.gson:gson:2.8.8'
-    compile 'org.apache.commons:commons-lang3:3.12.0'
-    compile'org.apache.commons:commons-text:1.9'
+    api group: 'org.ow2.asm', name: 'asm', version: '9.2'
+    api group: 'org.ow2.asm', name: 'asm-commons', version: '9.2'
+    api group: 'org.ow2.asm', name: 'asm-util', version: '9.2'
+    api group: 'org.ow2.asm', name: 'asm-tree', version: '9.2'
+    api 'com.google.code.gson:gson:2.8.8'
+    api 'org.apache.commons:commons-lang3:3.12.0'
+    api 'org.apache.commons:commons-text:1.9'
 
-    compile 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    api 'org.junit.jupiter:junit-jupiter-api:5.6.0'
 
 }
 

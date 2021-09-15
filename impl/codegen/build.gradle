@@ -6,16 +6,17 @@ dependencies {
     implementation(project(':api'))
 
     // https://mvnrepository.com/artifact/org.ow2.asm/asm
-    testCompile group: 'org.ow2.asm', name: 'asm', version: '9.1'
-    testCompile group: 'org.ow2.asm', name: 'asm-commons', version: '9.1'
-    testCompile group: 'org.ow2.asm', name: 'asm-util', version: '9.1'
-    testCompile group: 'org.ow2.asm', name: 'asm-tree', version: '9.1'
+    testImplementation group: 'org.ow2.asm', name: 'asm', version: '9.2'
+    testImplementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.2'
+    testImplementation group: 'org.ow2.asm', name: 'asm-util', version: '9.2'
+    testImplementation group: 'org.ow2.asm', name: 'asm-tree', version: '9.2'
 
 }
 
 task runCodeGen(type: JavaExec) {
     dependsOn(':impl.jdk8:classes')
     dependsOn(':impl.jdk9:classes')
+    dependsOn(':impl.jdk17:classes')
 
     classpath = sourceSets.test.runtimeClasspath
     main = 'io.github.karlatemp.unsafeaccessor.RunCodeGen'

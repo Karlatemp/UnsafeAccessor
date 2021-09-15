@@ -17,21 +17,23 @@ task sourcesJar(type: Jar) {
     from(project(':api').sourceSets.main.allSource)
     from(project(':impl.jdk8').sourceSets.main.allSource)
     from(project(':impl.jdk9').sourceSets.main.allSource)
+    from(project(':impl.jdk17').sourceSets.main.allSource)
     from(project.sourceSets.main.allSource)
 }
 
 dependencies {
     implementation(project(':api'))
-    implementation(project(':impl.jdk8'))
 
+    implementation(files(new File(project(':impl.jdk8').buildDir, "classes/java/main")))
     implementation(files(new File(project(':impl.jdk9').buildDir, "classes/java/main")))
+    implementation(files(new File(project(':impl.jdk17').buildDir, "classes/java/main")))
     implementation(files("generated"))
 
     // https://mvnrepository.com/artifact/org.ow2.asm/asm
-    testCompile group: 'org.ow2.asm', name: 'asm', version: '9.1'
-    testCompile group: 'org.ow2.asm', name: 'asm-commons', version: '9.1'
-    testCompile group: 'org.ow2.asm', name: 'asm-util', version: '9.1'
-    testCompile group: 'org.ow2.asm', name: 'asm-tree', version: '9.1'
+    testImplementation group: 'org.ow2.asm', name: 'asm', version: '9.2'
+    testImplementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.2'
+    testImplementation group: 'org.ow2.asm', name: 'asm-util', version: '9.2'
+    testImplementation group: 'org.ow2.asm', name: 'asm-tree', version: '9.2'
 
 }
 
