@@ -1,6 +1,6 @@
 # Unsafe Accessor
 
-Here is a bridge to access Unsafe.
+Here is a bridge to access Unsafe ( `sun.misc.Unsafe` and `jdk.internal.misc.Unsafe` ).
 
 UnsafeAccessor is available on MavenCentral
 
@@ -8,7 +8,7 @@ UnsafeAccessor is available on MavenCentral
 
 ```groovy
 dependencies {
-    compile("io.github.karlatemp:unsafe-accessor:1.6.1")
+    compile("io.github.karlatemp:unsafe-accessor:1.6.2")
 }
 ```
 
