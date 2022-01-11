@@ -5,16 +5,22 @@ def includeProject = { name, path ->
     project(name).projectDir = new File(rootDir, path)
 }
 def importImpl = { name ->
-    includeProject(':impl.'+ name, 'impl/'+name)
+    includeProject(':impl.'+ name, 'impl/'+name.replace(':', '/'))
 }
 
 include(':api')
 
-importImpl('jdk8')
-importImpl('jdk9')
-importImpl('jdk17')
-
 importImpl('codegen')
+importImpl('codegen:pregen')
+
+importImpl('jdks')
+
+importImpl('jdks:jdk8')
+importImpl('jdks:jdk9')
+importImpl('jdks:jdk17')
+
+importImpl('codegen:postgen')
+
 
 importImpl('loader')
 importImpl('testunit')

@@ -15,19 +15,18 @@ task javadocJar(type: Jar) {
 task sourcesJar(type: Jar) {
     archiveClassifier.set("sources")
     from(project(':api').sourceSets.main.allSource)
-    from(project(':impl.jdk8').sourceSets.main.allSource)
-    from(project(':impl.jdk9').sourceSets.main.allSource)
-    from(project(':impl.jdk17').sourceSets.main.allSource)
+    project(':impl.jdks').subprojects.forEach { jdkImpl ->
+        from(jdkImpl.sourceSets.main.allSource)
+    }
     from(project.sourceSets.main.allSource)
 }
 
 dependencies {
     implementation(project(':api'))
 
-    implementation(files(new File(project(':impl.jdk8').buildDir, "classes/java/main")))
-    implementation(files(new File(project(':impl.jdk9').buildDir, "classes/java/main")))
-    implementation(files(new File(project(':impl.jdk17').buildDir, "classes/java/main")))
-    implementation(files("generated"))
+    project(':impl.jdks').subprojects.forEach { jdkImpl ->
+        implementation(files(new File(jdkImpl.buildDir, "classes/java/main")))
+    }
 
     // https://mvnrepository.com/artifact/org.ow2.asm/asm
     testImplementation group: 'org.ow2.asm', name: 'asm', version: '9.2'
@@ -36,5 +35,3 @@ dependencies {
     testImplementation group: 'org.ow2.asm', name: 'asm-tree', version: '9.2'
 
 }
-
-tasks.findByName("compileJava").mustRunAfter(":impl.codegen:runCodeGen")

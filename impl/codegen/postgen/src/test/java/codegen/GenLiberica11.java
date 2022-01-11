@@ -1,7 +1,8 @@
-package io.github.karlatemp.unsafeaccessor.codegen;
+package codegen;
 
 import io.github.karlatemp.unsafeaccessor.CodeGenUtils;
 import io.github.karlatemp.unsafeaccessor.WorkingDirUtils;
+import org.junit.jupiter.api.Test;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.commons.ClassRemapper;
 import org.objectweb.asm.commons.Remapper;
@@ -12,10 +13,11 @@ import java.io.File;
 import java.io.FileInputStream;
 
 public class GenLiberica11 {
-    public static void main(String[] args) throws Exception {
+    @Test
+    public void main() throws Exception {
         File model = new File(
-                WorkingDirUtils.projectDir,
-                "impl/jdk9/build/classes/java/main/io/github/karlatemp/unsafeaccessor/Impl9.class"
+                WorkingDirUtils.PROJECT_DIR,
+                "impl/jdks/jdk9/build/classes/java/main/io/github/karlatemp/unsafeaccessor/Impl9.class"
         );
         ClassNode node = new ClassNode();
         new ClassReader(new FileInputStream(model))

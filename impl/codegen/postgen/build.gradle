@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+dependencies {
+    testApi project(':impl.codegen')
+    testApi project(':impl.codegen').sourceSets.test.output
+}
+
+compileJava {
+    dependsOn(':impl.jdks:compileJdkImpls')
+}
+
+def crtProject = project
+
+rootProject.allprojects {
+    if (project.path == ':impl.loader') {
+        pluginManager.withPlugin('java') {
+            dependencies {
+                implementation crtProject.files(crtProject.file('build/c-generated'))
+            }
+            compileJava {
+                dependsOn(crtProject.tasks.test)
+            }
+        }
+    }
+}

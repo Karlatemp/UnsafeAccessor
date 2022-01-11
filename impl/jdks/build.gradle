@@ -1,0 +1,6 @@
+
+tasks.register('compileJdkImpls') {task0 ->
+    subprojects {
+        task0.dependsOn(project.path + ':classes')
+    }
+}

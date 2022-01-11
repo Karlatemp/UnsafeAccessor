@@ -1,18 +1,26 @@
 plugins {
     id 'java'
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
 }
 
 dependencies {
-    implementation(project(':api'))
+    api project(':api')
 
     // https://mvnrepository.com/artifact/org.ow2.asm/asm
-    testImplementation group: 'org.ow2.asm', name: 'asm', version: '9.2'
-    testImplementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.2'
-    testImplementation group: 'org.ow2.asm', name: 'asm-util', version: '9.2'
-    testImplementation group: 'org.ow2.asm', name: 'asm-tree', version: '9.2'
+    api group: 'org.ow2.asm', name: 'asm', version: '9.2'
+    api group: 'org.ow2.asm', name: 'asm-commons', version: '9.2'
+    api group: 'org.ow2.asm', name: 'asm-util', version: '9.2'
+    api group: 'org.ow2.asm', name: 'asm-tree', version: '9.2'
 
 }
 
+allprojects {
+    tasks.withType(Test) {
+        environment("PROJ_DIR", rootProject.projectDir.absolutePath)
+    }
+}
+/*
 task runCodeGen(type: JavaExec) {
     dependsOn(':impl.jdk8:classes')
     dependsOn(':impl.jdk9:classes')
@@ -21,3 +29,4 @@ task runCodeGen(type: JavaExec) {
     classpath = sourceSets.test.runtimeClasspath
     main = 'io.github.karlatemp.unsafeaccessor.RunCodeGen'
 }
+*/

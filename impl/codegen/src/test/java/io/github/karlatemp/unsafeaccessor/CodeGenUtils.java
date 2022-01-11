@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.Base64;
 
 public class CodeGenUtils {
+    public static final File OUTPUT = new File("build/c-generated");
+
     public static void genCons(ClassNode node) {
         MethodVisitor init = node.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
         init.visitMaxs(1, 1);
@@ -26,8 +28,7 @@ public class CodeGenUtils {
     }
 
     public static void save(ClassNode node) {
-        File output = new File(WorkingDirUtils.projectDir, "impl/loader/generated");
-        File file = new File(output, node.name + ".class");
+        File file = new File(OUTPUT, node.name + ".class");
         save(file, toBytecode(node));
     }
 
@@ -41,11 +42,8 @@ public class CodeGenUtils {
     }
 
     public static void save(byte[] code, String name) {
-        File dir = new File(
-                WorkingDirUtils.projectDir, "impl/codegen/build/x"
-        );
-        save(new File(dir, name + ".class"), code);
-        save(new File(dir, name + ".b64.txt"), Base64.getEncoder().encode(code));
+        save(new File(OUTPUT, name + ".class"), code);
+        save(new File(OUTPUT, name + ".b64.txt"), Base64.getEncoder().encode(code));
     }
 
     public static void main(String[] args) throws Throwable {

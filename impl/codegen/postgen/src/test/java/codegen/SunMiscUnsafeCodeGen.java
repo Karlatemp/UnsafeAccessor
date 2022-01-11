@@ -1,6 +1,7 @@
-package io.github.karlatemp.unsafeaccessor.codegen;
+package codegen;
 
 import io.github.karlatemp.unsafeaccessor.CodeGenUtils;
+import org.junit.jupiter.api.Test;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -31,7 +32,8 @@ public class SunMiscUnsafeCodeGen {
         method.visitMaxs(counter, counter);
     }
 
-    public static void main(String[] args) throws Throwable {
+    @Test
+    public void main() throws Throwable {
         Method method = SunMiscUnsafeCodeGen.class.getDeclaredMethod("defineClass", String.class, byte[].class, int.class, int.class, ClassLoader.class, ProtectionDomain.class);
         String desc = Type.getMethodDescriptor(method);
 

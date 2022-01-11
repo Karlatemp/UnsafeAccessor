@@ -1,6 +1,7 @@
-package io.github.karlatemp.unsafeaccessor.codegen;
+package codegen;
 
 import io.github.karlatemp.unsafeaccessor.CodeGenUtils;
+import org.junit.jupiter.api.Test;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
@@ -8,7 +9,8 @@ import org.objectweb.asm.tree.ClassNode;
 import java.util.Base64;
 
 public class GenObjectInitializer {
-    public static void main(String[] args) throws Throwable {
+    @Test
+    public void main() throws Throwable {
         ClassNode newClass = new ClassNode();
         newClass.visit(
                 Opcodes.V1_8,
