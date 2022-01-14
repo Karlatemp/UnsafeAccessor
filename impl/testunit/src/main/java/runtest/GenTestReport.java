@@ -11,11 +11,11 @@ import java.util.Comparator;
 import java.util.List;
 
 public class GenTestReport {
-    static class TaskModule {
-        String name, status, timeStringed, exception;
-        long time;
-        List<TaskModule> subtasks;
-        String rawOutput;
+    public static class TaskModule {
+        public String name, status, timeStringed, exception;
+        public long time;
+        public List<TaskModule> subtasks;
+        public String rawOutput;
     }
 
     private static String xml(String raw) {

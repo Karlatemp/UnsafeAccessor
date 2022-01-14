@@ -5,16 +5,13 @@ import jdk.internal.access.SharedSecrets;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.Proxy;
 import java.util.function.Supplier;
 
 import static io.github.karlatemp.unsafeaccessor.BytecodeUtil.replace;
 
-class UsfAllocImpl9 extends UsfAlloc {
-    Class<?> usfClass() {
-        return jdk.internal.misc.Unsafe.class;
-    }
-
+class UsfAllocImpl9 extends UsfAllocCtx {
     static class Injector {
         static {
             Class<?> klass = Injector.class;
@@ -93,33 +90,79 @@ class UsfAllocImpl9 extends UsfAlloc {
         }
     }
 
-    @Override
-    void destroyLimit(UsfAllocCtx ctx) throws Exception {
-        Class<?>[] ACCESS_CLASSES = {
+    void load() throws Throwable {
+        this.ACCESS_C = new Class<?>[]{
                 findJLA(), findSS(), findJLMA()
         };
+
+        try {
+            destroyLimitByUnsafe(this);
+        } catch (Throwable throwable) {
+            try {
+                destroyLimitByProxy(this);
+            } catch (Throwable t2) {
+                throwable.addSuppressed(t2);
+                throw throwable;
+            }
+        }
+        Root.Secret.MACCESS = newModuleAccess(this);
+
+        boolean isGetObj;
+        try {
+            Class.forName("jdk.internal.misc.Unsafe")
+                    .getMethod("getObject", Object.class, long.class);
+            isGetObj = true;
+        } catch (NoSuchMethodException ignored) {
+            isGetObj = false;
+        }
+
+        Unsafe.theUnsafe = isGetObj ? new Impl9Obj() : new Impl9();
+    }
+
+    void destroyLimitByUnsafe(UsfAllocCtx ctx) throws Throwable {
+        sun.misc.Unsafe legacyUnsafe;
+        {
+            Field legacyUsfField = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
+            legacyUsfField.setAccessible(true);
+            legacyUnsafe = (sun.misc.Unsafe) legacyUsfField.get(null);
+        }
+        Module target = ctx.loader().getUnnamedModule();
+        Module target2 = UsfAllocImpl9.class.getModule();
+        ModuleLayer.Controller controller = (ModuleLayer.Controller) legacyUnsafe.allocateInstance(ModuleLayer.Controller.class);
+        legacyUnsafe.putObject(controller,
+                legacyUnsafe.objectFieldOffset(ModuleLayer.Controller.class.getDeclaredField("layer")),
+                Object.class.getModule().getLayer()
+        );
+        for (Class<?> targetClass : ctx.ACCESS_C) {
+            controller.addExports(targetClass.getModule(), targetClass.getPackageName(), target);
+            controller.addExports(targetClass.getModule(), targetClass.getPackageName(), target2);
+        }
+        for (String opkg : new String[]{
+                "jdk.internal.misc",
+        }) {
+            controller.addExports(Object.class.getModule(), opkg, target);
+            controller.addExports(Object.class.getModule(), opkg, target2);
+        }
+        ctx.namespace = "io.github.karlatemp.unsafeaccessor";
+    }
+
+    void destroyLimitByProxy(UsfAllocCtx ctx) throws Exception {
         Object proxy = Proxy.newProxyInstance(
                 ctx.loader(),
-                new Class[]{ACCESS_CLASSES[0]},
+                new Class[]{ctx.ACCESS_C[0]},
                 (proxy1, method, args) -> null
         );
         String namespace = ctx.namespace = proxy.getClass().getPackageName();
-        ctx.ACCESS_C = ACCESS_CLASSES;
 
         { // Injector
             byte[] data = readC("UsfAllocImpl9$Injector.class");
             data = inNamespace(data, "UsfAllocImpl9$Injector", namespace);
-            data = doRemap(data, ACCESS_CLASSES);
+            data = doRemap(data, ctx.ACCESS_C);
             ctx.loader().defineAndLoad(data);
         }
     }
 
-    @Override
-    Unsafe newUnsafe(UsfAllocCtx ctx) throws Exception {
-        return ctx.newUsfImpl(this);
-    }
 
-    @Override
     ModuleAccess newModuleAccess(UsfAllocCtx ctx) throws Exception {
         byte[] data = readC("ModuleAccessImpl$JDK9.class");
         data = inNamespace(data, "ModuleAccessImpl$JDK9", ctx.namespace);

@@ -14,6 +14,7 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @TestTask(name = "BinaryCompatibilityAnalysis")
@@ -47,11 +48,14 @@ public class BinaryCompatibilityAnalysis {
     )
     public static void run() throws Throwable {
         System.out.println("Analysing Unsafe BinaryCompatibility");
+        Class<?> targetClass = Unsafe.getUnsafe().getClass();
+        System.out.println("Unsafe implement: " + targetClass);
+        analyze(targetClass);
+    }
+
+    private static void analyze(Class<?> targetClass) throws Throwable {
         List<MethodNode> methods = new ArrayList<>();
         {
-            Class<?> targetClass = Unsafe.getUnsafe().getClass();
-            System.out.println("Unsafe implement: " + targetClass);
-
             while (targetClass != null) {
                 ClassNode node = new ClassNode();
                 new ClassReader(targetClass.getName()).accept(node, 0);

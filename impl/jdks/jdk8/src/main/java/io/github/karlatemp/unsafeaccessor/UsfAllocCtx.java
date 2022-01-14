@@ -1,9 +1,44 @@
 package io.github.karlatemp.unsafeaccessor;
 
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.ArrayList;
+import java.util.List;
 
 class UsfAllocCtx {
+    interface C<T> {
+        T call() throws Throwable;
+    }
+
+    static <T> T rc(C<T> c) {
+        try {
+            return c.call();
+        } catch (Throwable throwable) {
+            throw new ExceptionInInitializerError(throwable);
+        }
+    }
+
+    static <T> T rc(C<T> c1, C<T>... c) {
+        if (c == null) return rc(c1);
+        Throwable mt;
+        List<Throwable> errs = new ArrayList<>(c.length);
+        try {
+            return c1.call();
+        } catch (Throwable throwable) {
+            mt = throwable;
+        }
+        for (C<T> c0 : c) {
+            try {
+                return c0.call();
+            } catch (Throwable throwable) {
+                errs.add(throwable);
+            }
+        }
+        ExceptionInInitializerError error = new ExceptionInInitializerError(mt);
+        for (Throwable t : errs) {
+            error.addSuppressed(t);
+        }
+        throw error;
+    }
+
     private DynClassLoader loader;
 
     void putUnsafeInstance(Unsafe usf) {
@@ -20,37 +55,9 @@ class UsfAllocCtx {
         return loader;
     }
 
-    @SuppressWarnings("rawtypes")
-    static class DynClassLoader extends ClassLoader implements Supplier, Consumer {
-        Object env;
-
-        DynClassLoader() {
-            super(DynClassLoader.class.getClassLoader());
-        }
-
-        @Override
-        public Object get() {
-            return env;
-        }
-
-        @Override
-        public void accept(Object o) {
-            env = o;
-        }
-
-        Class<?> define(byte[] code) {
-            return defineClass(null, code, 0, code.length, null);
-        }
-
-        Class<?> defineAndLoad(byte[] data) throws ClassNotFoundException {
-            return Class.forName(define(data).getName(), true, this);
-        }
-    }
-
     String namespace;
     Class<?>[] ACCESS_C;
 
-    Unsafe newUsfImpl(UsfAlloc thiz) throws Exception {
-        throw new UnsupportedOperationException();
+    void load() throws Throwable {
     }
 }

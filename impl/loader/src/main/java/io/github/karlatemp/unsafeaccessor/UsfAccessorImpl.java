@@ -8,80 +8,29 @@ import java.util.function.Consumer;
 @SuppressWarnings("unchecked")
 class UsfAccessorImpl extends UsfAccessor.UsfAccessorSpi {
 
-    static class UsfACtxImpl extends UsfAllocCtx {
-        @Override
-        Unsafe newUsfImpl(UsfAlloc alloc) throws Exception {
-            return (Unsafe) newUsf(alloc);
-        }
-
-        Object newUsf(UsfAlloc alloc) throws Exception {
-            if (alloc instanceof UsfAllocImpl8) {
-                return new SunMiscUnsafeImpl();
-            }
-            return newUsf9(alloc);
-        }
-
-        @SuppressWarnings("SwitchStatementWithTooFewBranches")
-        Object newUsf9(UsfAlloc $$$$$$$$$$$$$$$$) throws Exception {
-            UsfAllocImpl9 alloc = (UsfAllocImpl9) $$$$$$$$$$$$$$$$;
-            boolean isGetObj;
-            try {
-                alloc.usfClass().getMethod("getObject", Object.class, long.class);
-                isGetObj = true;
-            } catch (NoSuchMethodException ignored) {
-                isGetObj = false;
-            }
-
-            String cname = alloc.getClass().getSimpleName();
-            String sname = null;
-            switch (cname) {
-                case "UsfAllocImpl17":
-                    return new UsfImpl17();
-                default:
-                    return isGetObj ? new Impl9Obj() : new Impl9();
-            }
-        }
-
+    static void initializeJava8() {
+        Root.Secret.MACCESS = new ModuleAccessImpl.Noop();
+        Unsafe.theUnsafe = new SunMiscUnsafeImpl();
     }
 
-    static UsfAlloc findImpl9() {
-        ExceptionInInitializerError e = new ExceptionInInitializerError("no any provider found");
-        for (String k : new String[]{
-                "17",
-                "9",
-                "8",
-        }) {
-            try {
-                UsfAlloc alloc = Class.forName("io.github.karlatemp.unsafeaccessor.UsfAllocImpl" + k)
-                        .asSubclass(UsfAlloc.class)
-                        .getDeclaredConstructor()
-                        .newInstance()
-                        .checkSelectedRequirement();
-                if (alloc != null) return alloc;
-            } catch (Throwable ex) {
-                e.addSuppressed(ex);
-            }
-        }
-        throw e;
+    static void initialize9Plus() throws Throwable {
+        Class.forName("io.github.karlatemp.unsafeaccessor.UsfAllocImpl9")
+                .asSubclass(UsfAllocCtx.class)
+                .getDeclaredConstructor()
+                .newInstance()
+                .load();
     }
 
     void initialize() {
         Root.Secret.MACCESS = new ModuleAccessImpl.PendingInit();
-        UsfAlloc alloc;
-        try {
+        try { // Java8 init
             Class.forName("java.lang.Module");
-            alloc = findImpl9();
         } catch (ClassNotFoundException ignored) {
-            alloc = new UsfAllocImpl8();
+            initializeJava8();
+            return;
         }
         try {
-            UsfAllocCtx ctx = new UsfACtxImpl();
-            alloc.prepare(ctx);
-            alloc.destroyLimit(ctx);
-
-            ctx.putUnsafeInstance(alloc.newUnsafe(ctx));
-
-            ctx.putModuleAccess(alloc.newModuleAccess(ctx));
+            initialize9Plus();
         } catch (Throwable throwable) {
             throw new ExceptionInInitializerError(throwable);
         }

@@ -96,6 +96,8 @@ public abstract class Unsafe {
         return INSTANCE;
     }
 
+    Unsafe() {}
+
     static Unsafe getUnsafe0() {
         if (theUnsafe == null) {
             UsfAccessor.initialize();

@@ -12,7 +12,21 @@ import static io.github.karlatemp.unsafeaccessor.Impl9.UsfHolder.usf;
 class Impl9 extends io.github.karlatemp.unsafeaccessor.Unsafe {
     static class UsfHolder {
         static final Unsafe usf = Unsafe.getUnsafe();
+
+        static final UsfSpecificMet.DAC DAC = UsfAllocCtx.rc(() -> {
+            Class.forName("jdk.internal.misc.Unsafe").getMethod("defineAnonymousClass", Class.class, byte[].class, Object[].class);
+            return new UsfSpecificMet.DAC() {
+                @Override
+                Class<?> defineAnonymousClass(Class<?> hostClass, byte[] data, Object[] cpPatches) {
+                    return usf.defineAnonymousClass(hostClass, data, cpPatches);
+                }
+            };
+        }, () -> Class.forName("io.github.karlatemp.unsafeaccessor.UsfImpl17$DAC")
+                .asSubclass(UsfSpecificMet.DAC.class)
+                .getDeclaredConstructor()
+                .newInstance());
     }
+
     @Override
     public boolean isJava9() {
         return true;
@@ -252,7 +266,7 @@ class Impl9 extends io.github.karlatemp.unsafeaccessor.Unsafe {
     }
 
     public Class<?> defineAnonymousClass(Class<?> hostClass, byte[] data, Object[] cpPatches) {
-        return usf.defineAnonymousClass(hostClass, data, cpPatches);
+        return UsfHolder.DAC.defineAnonymousClass(hostClass, data, cpPatches);
     }
 
     public Object allocateInstance(Class<?> cls) throws InstantiationException {
