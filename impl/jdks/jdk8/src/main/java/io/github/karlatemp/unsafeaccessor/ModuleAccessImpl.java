@@ -85,6 +85,11 @@ class ModuleAccessImpl {
         public void addUses(Object m, Class<?> service) {
             throw new UnsupportedOperationException();
         }
+
+        @Override
+        public Object getUnnamedModule(ClassLoader cl) {
+            throw new UnsupportedOperationException();
+        }
     }
 
     static class Noop implements ModuleAccess {
@@ -158,6 +163,11 @@ class ModuleAccessImpl {
 
         @Override
         public void addUses(Object m, Class<?> service) {
+        }
+
+        @Override
+        public Object getUnnamedModule(ClassLoader cl) {
+            return null;
         }
     }
 }

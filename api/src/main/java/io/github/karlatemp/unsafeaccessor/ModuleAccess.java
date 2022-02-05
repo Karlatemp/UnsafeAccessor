@@ -101,4 +101,5 @@ public interface ModuleAccess {
      */
     void addUses(Object m, Class<?> service);
 
+    Object getUnnamedModule(ClassLoader cl);
 }

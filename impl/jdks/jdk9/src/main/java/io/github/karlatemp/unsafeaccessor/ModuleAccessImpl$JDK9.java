@@ -133,4 +133,9 @@ class ModuleAccessImpl$JDK9 implements ModuleAccess {
     public void addUses(Object m, Class<?> service) {
         JLA.addUses((Module) m, service);
     }
+
+    @Override
+    public Object getUnnamedModule(ClassLoader cl) {
+        return cl.getUnnamedModule();
+    }
 }
