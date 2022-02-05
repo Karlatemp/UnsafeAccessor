@@ -5,12 +5,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.AllPermission;
+import java.security.PermissionCollection;
 import java.security.ProtectionDomain;
 import java.util.Base64;
 
-class BytecodeUtil {
+public class BytecodeUtil {
 
-    static byte[] replace(byte[] source, byte[] replace, byte[] target) {
+    public static byte[] replace(byte[] source, byte[] replace, byte[] target) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(source.length);
         int sourceLength = source.length,
                 replaceLength = replace.length,
@@ -34,11 +35,17 @@ class BytecodeUtil {
         return outputStream.toByteArray();
     }
 
-    static byte[] replace(byte[] classfile, String const1, String const2) {
+    public static byte[] replace(byte[] classfile, String const1, String const2) {
         return replace(classfile, toJvm(const1), toJvm(const2));
     }
 
-    static byte[] toJvm(String const0) {
+    public static byte[] replaceC(byte[] c, String f, String t) {
+        c = replace(c, f, t);
+        c = replace(c, "L" + f + ";", "L" + t + ";");
+        return c;
+    }
+
+    public static byte[] toJvm(String const0) {
         byte[] bytes = const0.getBytes(StandardCharsets.UTF_8);
         ByteArrayOutputStream bos = new ByteArrayOutputStream(bytes.length + 2);
         try {
@@ -50,16 +57,27 @@ class BytecodeUtil {
         return bos.toByteArray();
     }
 
-    static class CLoader extends ClassLoader {
-        ProtectionDomain domain = new ProtectionDomain(
-                null, new AllPermission().newPermissionCollection()
-        );
+    public static class CLoader extends ClassLoader {
+        private final ProtectionDomain domain;
 
-        Class<?> load(byte[] code) {
+        public CLoader() {
+            this(ClassLoader.getSystemClassLoader());
+        }
+
+        public CLoader(ClassLoader parent) {
+            super(parent);
+            AllPermission ap = new AllPermission();
+            PermissionCollection pc = ap.newPermissionCollection();
+            pc.add(ap);
+            pc.setReadOnly();
+            domain = new ProtectionDomain(null, pc);
+        }
+
+        public Class<?> load(byte[] code) {
             return defineClass(null, code, 0, code.length, domain);
         }
 
-        Class<?> load(String code) {
+        public Class<?> load(String code) {
             return load(Base64.getDecoder().decode(code));
         }
     }
