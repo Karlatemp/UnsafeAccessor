@@ -18,6 +18,8 @@ dependencies {
 
     api 'org.junit.jupiter:junit-jupiter-api:5.8.2'
 
+    api project(':java-reflection-wrap')
+
 }
 
 compileJava {

@@ -7,6 +7,9 @@ def includeProject = { name, path ->
 def importImpl = { name ->
     includeProject(':impl.'+ name, 'impl/'+name.replace(':', '/'))
 }
+def importSub = { name ->
+    includeProject(':' + name, 'subproj/' + name)
+}
 
 include(':api')
 
@@ -23,5 +26,8 @@ importImpl('codegen:postgen')
 
 
 importImpl('loader')
+
+importSub('java-reflection-wrap')
+
 importImpl('testunit')
 
