@@ -15,7 +15,7 @@ public class TestObjectInitializer {
         }
     }
 
-    @TestTask
+    // @TestTask
     void run() throws Exception {
         Unsafe usf = Unsafe.getUnsafe();
         Root.initializeObject(usf.allocateInstance(Object.class));
