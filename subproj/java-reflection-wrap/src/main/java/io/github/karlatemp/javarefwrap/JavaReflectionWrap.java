@@ -91,7 +91,7 @@ public class JavaReflectionWrap {
                 Class.forName(AccessWrapperHolder.jRefPkg + "FieldAccessor")
         );
 
-        MH_A_getRoot = lookup.findVirtual(AccessibleObject.class, "getRoot", MethodType.methodType(AccessibleObject.class));
+        MH_A_getRoot = AccessibleObjectRootResolver.resolve(access, lookup);
 
         MH_C_copy = lookup.findVirtual(Constructor.class, "copy", MethodType.methodType(Constructor.class));
         MH_M_copy = lookup.findVirtual(Method.class, "copy", MethodType.methodType(Method.class));
