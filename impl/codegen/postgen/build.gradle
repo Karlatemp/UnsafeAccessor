@@ -1,12 +1,11 @@
 plugins {
     id 'java'
     id 'java-library'
-    id 'org.jetbrains.kotlin.jvm'
 }
 
 dependencies {
-    testApi project(':impl.codegen')
-    testApi project(':impl.codegen').sourceSets.test.output
+    testImplementation project(':impl.codegen')
+    testImplementation project(':impl.codegen').sourceSets.test.output
 }
 
 compileJava {
