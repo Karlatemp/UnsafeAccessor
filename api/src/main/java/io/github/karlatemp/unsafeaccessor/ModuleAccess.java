@@ -102,4 +102,36 @@ public interface ModuleAccess {
     void addUses(Object m, Class<?> service);
 
     Object getUnnamedModule(ClassLoader cl);
+
+    /**
+     * Returns true if module m can access restricted methods.
+     *
+     * @implNote Always true if current jrt doesn't contain EnableNativeAccess field
+     * @since 1.7.0, JDK 17
+     */
+    boolean isEnableNativeAccess(Object m);
+
+    /**
+     * Return direct field value of module
+     *
+     * @implNote Always true if current jrt doesn't contain EnableNativeAccess field
+     * @since 1.7.0, JDK 17
+     */
+    boolean isEnableNativeAccess0(Object m);
+
+    /**
+     * Updates module m to allow access to restricted methods.
+     *
+     * @apiNote Error when module is an unnamed module.
+     * @since 1.7.0, JDK 17
+     */
+    void addEnableNativeAccess(Object m);
+
+    /**
+     * Updates module m to allow access to restricted methods.
+     *
+     * @apiNote May have no effect if module is an unnamed module.
+     * @since 1.7.0, JDK 17
+     */
+    void addEnableNativeAccess0(Object m);
 }

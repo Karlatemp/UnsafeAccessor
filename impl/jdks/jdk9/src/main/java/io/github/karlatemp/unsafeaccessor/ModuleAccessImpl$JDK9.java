@@ -4,6 +4,7 @@ import jdk.internal.access.JavaLangAccess;
 import jdk.internal.access.JavaLangModuleAccess;
 import jdk.internal.access.SharedSecrets;
 
+import java.lang.invoke.VarHandle;
 import java.lang.module.ModuleDescriptor;
 import java.net.URI;
 import java.util.Iterator;
@@ -15,7 +16,8 @@ import java.util.function.Supplier;
 class ModuleAccessImpl$JDK9 implements ModuleAccess {
     private static Object EVERYONE_MODULE;
     private static Object ALL_UNNAMED_MODULE;
-    private static final Supplier<UnsafeAccess> SUPPLIER;
+    protected static final Supplier<UnsafeAccess> SUPPLIER;
+    private static Object Module$enableNativeAccess;
 
     private static Object findModule(String name) {
         try {
@@ -54,6 +56,24 @@ class ModuleAccessImpl$JDK9 implements ModuleAccess {
         if (ALL_UNNAMED_MODULE instanceof Throwable)
             throw new UnsupportedOperationException((Throwable) ALL_UNNAMED_MODULE);
         return ALL_UNNAMED_MODULE;
+    }
+
+    @SuppressWarnings("JavaLangInvokeHandleSignature")
+    private static VarHandle getModule$enableNativeAccess() {
+        Object vh = Module$enableNativeAccess;
+        if (vh != null) {
+            if (vh instanceof VarHandle) return (VarHandle) vh;
+            return null;
+        }
+        try {
+            VarHandle vvh = SUPPLIER.get().getTrustedIn(Module.class)
+                    .findVarHandle(Module.class, "enableNativeAccess", boolean.class);
+            Module$enableNativeAccess = vvh;
+            return vvh;
+        } catch (Exception ignored) {
+            Module$enableNativeAccess = Boolean.FALSE;
+            return null;
+        }
     }
 
     @Override
@@ -137,5 +157,39 @@ class ModuleAccessImpl$JDK9 implements ModuleAccess {
     @Override
     public Object getUnnamedModule(ClassLoader cl) {
         return cl.getUnnamedModule();
+    }
+
+    @Override
+    public boolean isEnableNativeAccess(Object m) {
+        Module mod = (Module) m;
+        if (!mod.isNamed()) return isEnableNativeAccess0(ALL_UNNAMED_MODULE);
+        return isEnableNativeAccess0(m);
+    }
+
+    @Override
+    public boolean isEnableNativeAccess0(Object m) {
+        Module mod = (Module) m;
+        VarHandle vh = getModule$enableNativeAccess();
+        if (vh == null) return true;
+        return (boolean) vh.getVolatile(mod);
+    }
+
+    @Override
+    public void addEnableNativeAccess0(Object m) {
+        Module mod = (Module) m;
+        VarHandle vh = getModule$enableNativeAccess();
+        if (vh == null) return;
+        vh.setVolatile(mod, true);
+    }
+
+    @Override
+    public void addEnableNativeAccess(Object m) {
+        Module mod = (Module) m;
+        if (mod != ALL_UNNAMED_MODULE && !mod.isNamed()) {
+            throw new IllegalArgumentException(
+                    "Enable native access for an unnamed module is unsupported. Please use ALL_UNNAMED_MODULE or addEnableNativeAccess0 if you're sure what you doing."
+            );
+        }
+        addEnableNativeAccess0(mod);
     }
 }

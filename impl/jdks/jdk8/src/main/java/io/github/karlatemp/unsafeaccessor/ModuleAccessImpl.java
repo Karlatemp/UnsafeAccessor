@@ -90,6 +90,26 @@ class ModuleAccessImpl {
         public Object getUnnamedModule(ClassLoader cl) {
             throw new UnsupportedOperationException();
         }
+
+        @Override
+        public boolean isEnableNativeAccess(Object m) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean isEnableNativeAccess0(Object m) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void addEnableNativeAccess(Object m) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void addEnableNativeAccess0(Object m) {
+            throw new UnsupportedOperationException();
+        }
     }
 
     static class Noop implements ModuleAccess {
@@ -168,6 +188,24 @@ class ModuleAccessImpl {
         @Override
         public Object getUnnamedModule(ClassLoader cl) {
             return null;
+        }
+
+        @Override
+        public boolean isEnableNativeAccess(Object m) {
+            return true;
+        }
+
+        @Override
+        public boolean isEnableNativeAccess0(Object m) {
+            return true;
+        }
+
+        @Override
+        public void addEnableNativeAccess(Object m) {
+        }
+
+        @Override
+        public void addEnableNativeAccess0(Object m) {
         }
     }
 }
