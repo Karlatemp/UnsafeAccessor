@@ -4,3 +4,8 @@ build/
 /keys
 
 *.log
+*.iml
+*.ipr
+*.iws
+
+/impl/jdks/gradle.properties

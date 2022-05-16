@@ -1,6 +1,38 @@
+import org.gradle.jvm.toolchain.internal.SpecificInstallationToolchainSpec
 
-tasks.register('compileJdkImpls') {task0 ->
+plugins {
+    id 'org.jetbrains.gradle.plugin.idea-ext'
+    // id 'java'
+}
+
+tasks.register('compileJdkImpls') { task0 ->
     subprojects {
         task0.dependsOn(project.path + ':classes')
     }
 }
+
+ext.set('setupJdk', { Project proj ->
+    proj.apply plugin: 'idea'
+    proj.apply plugin: 'org.jetbrains.gradle.plugin.idea-ext'
+    def jdkName = findProperty(proj.name + '.name')
+    if (jdkName == null) {
+        println("WARNING: No JDK Name found of " + proj.name)
+        println('Please setup jdk name by modify ' + project.file('gradle.properties').absolutePath)
+    } else {
+        proj.idea.module.jdkName(jdkName)
+        println 'IDEA JDK NAME: ' + jdkName
+    }
+    def jdkLoc = findProperty(proj.name + '.loc')
+    if (jdkLoc == null) {
+        println("WARNING: No JDK Loc found of " + proj.name)
+        println('Please setup jdk location by modify ' + project.file('gradle.properties').absolutePath)
+    } else {
+        proj.tasks.withType(JavaCompile) {
+            println 'JDK LOC: ' + jdkLoc
+            var spec = new SpecificInstallationToolchainSpec(proj.objects, new File(jdkLoc))
+            spec.languageVersion.set(JavaLanguageVersion.of(17))
+
+            javaCompiler.set(proj.javaToolchains.compilerFor(spec))
+        }
+    }
+})

@@ -19,3 +19,5 @@ compileJava {
 dependencies {
     api(project(':impl.jdks:jdk9'))
 }
+
+parent.ext.get('setupJdk')(project)
