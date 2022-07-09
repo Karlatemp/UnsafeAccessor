@@ -4,9 +4,10 @@ import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.security.ProtectionDomain;
 
-@SuppressWarnings({"removal", "unused"})
+@SuppressWarnings({"all"})
 class SunMiscUnsafe extends io.github.karlatemp.unsafeaccessor.Unsafe {
     protected final Unsafe theUnsafe = initUnsafe();
 
@@ -1630,93 +1631,300 @@ class SunMiscUnsafe extends io.github.karlatemp.unsafeaccessor.Unsafe {
 
     @Override
     public boolean isBigEndian() {
-        throw new UnsupportedOperationException();
+        return BIG_ENDIAN;
     }
+
+    private static final boolean BIG_ENDIAN = ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN;
 
     @Override
     public boolean unalignedAccess() {
-        throw new UnsupportedOperationException();
+        return false;
     }
 
-    @Override
-    public long getLongUnaligned(Object o, long offset) {
-        throw new UnsupportedOperationException();
+    // region unaligned
+
+    private static int pickPos(int top, int pos) {
+        return BIG_ENDIAN ? top - pos : pos;
     }
 
-    @Override
-    public long getLongUnaligned(Object o, long offset, boolean bigEndian) {
-        throw new UnsupportedOperationException();
+    // These methods construct integers from bytes.  The byte ordering
+    // is the native endianness of this platform.
+    private static long makeLong(byte i0, byte i1, byte i2, byte i3, byte i4, byte i5, byte i6, byte i7) {
+        return ((toUnsignedLong(i0) << pickPos(56, 0))
+                | (toUnsignedLong(i1) << pickPos(56, 8))
+                | (toUnsignedLong(i2) << pickPos(56, 16))
+                | (toUnsignedLong(i3) << pickPos(56, 24))
+                | (toUnsignedLong(i4) << pickPos(56, 32))
+                | (toUnsignedLong(i5) << pickPos(56, 40))
+                | (toUnsignedLong(i6) << pickPos(56, 48))
+                | (toUnsignedLong(i7) << pickPos(56, 56)));
     }
 
-    @Override
-    public int getIntUnaligned(Object o, long offset) {
-        throw new UnsupportedOperationException();
+    private static long makeLong(short i0, short i1, short i2, short i3) {
+        return ((toUnsignedLong(i0) << pickPos(48, 0))
+                | (toUnsignedLong(i1) << pickPos(48, 16))
+                | (toUnsignedLong(i2) << pickPos(48, 32))
+                | (toUnsignedLong(i3) << pickPos(48, 48)));
     }
 
-    @Override
-    public int getIntUnaligned(Object o, long offset, boolean bigEndian) {
-        throw new UnsupportedOperationException();
+    private static long makeLong(int i0, int i1) {
+        return (toUnsignedLong(i0) << pickPos(32, 0))
+                | (toUnsignedLong(i1) << pickPos(32, 32));
     }
 
-    @Override
-    public short getShortUnaligned(Object o, long offset) {
-        throw new UnsupportedOperationException();
+    private static int makeInt(short i0, short i1) {
+        return (toUnsignedInt(i0) << pickPos(16, 0))
+                | (toUnsignedInt(i1) << pickPos(16, 16));
     }
 
-    @Override
-    public short getShortUnaligned(Object o, long offset, boolean bigEndian) {
-        throw new UnsupportedOperationException();
+    private static int makeInt(byte i0, byte i1, byte i2, byte i3) {
+        return ((toUnsignedInt(i0) << pickPos(24, 0))
+                | (toUnsignedInt(i1) << pickPos(24, 8))
+                | (toUnsignedInt(i2) << pickPos(24, 16))
+                | (toUnsignedInt(i3) << pickPos(24, 24)));
     }
 
-    @Override
-    public char getCharUnaligned(Object o, long offset) {
-        throw new UnsupportedOperationException();
+    private static short makeShort(byte i0, byte i1) {
+        return (short) ((toUnsignedInt(i0) << pickPos(8, 0))
+                | (toUnsignedInt(i1) << pickPos(8, 8)));
     }
 
-    @Override
-    public char getCharUnaligned(Object o, long offset, boolean bigEndian) {
-        throw new UnsupportedOperationException();
+    private static byte pick(byte le, byte be) {
+        return BIG_ENDIAN ? be : le;
     }
 
-    @Override
-    public void putLongUnaligned(Object o, long offset, long x) {
-        throw new UnsupportedOperationException();
+    private static short pick(short le, short be) {
+        return BIG_ENDIAN ? be : le;
     }
 
-    @Override
-    public void putLongUnaligned(Object o, long offset, long x, boolean bigEndian) {
-        throw new UnsupportedOperationException();
+    private static int pick(int le, int be) {
+        return BIG_ENDIAN ? be : le;
     }
 
-    @Override
-    public void putIntUnaligned(Object o, long offset, int x) {
-        throw new UnsupportedOperationException();
+    // These methods write integers to memory from smaller parts
+    // provided by their caller.  The ordering in which these parts
+    // are written is the native endianness of this platform.
+    private void putLongParts(Object o, long offset, byte i0, byte i1, byte i2, byte i3, byte i4, byte i5, byte i6, byte i7) {
+        putByte(o, offset + 0, pick(i0, i7));
+        putByte(o, offset + 1, pick(i1, i6));
+        putByte(o, offset + 2, pick(i2, i5));
+        putByte(o, offset + 3, pick(i3, i4));
+        putByte(o, offset + 4, pick(i4, i3));
+        putByte(o, offset + 5, pick(i5, i2));
+        putByte(o, offset + 6, pick(i6, i1));
+        putByte(o, offset + 7, pick(i7, i0));
     }
 
-    @Override
-    public void putIntUnaligned(Object o, long offset, int x, boolean bigEndian) {
-        throw new UnsupportedOperationException();
+    private void putLongParts(Object o, long offset, short i0, short i1, short i2, short i3) {
+        putShort(o, offset + 0, pick(i0, i3));
+        putShort(o, offset + 2, pick(i1, i2));
+        putShort(o, offset + 4, pick(i2, i1));
+        putShort(o, offset + 6, pick(i3, i0));
     }
 
-    @Override
-    public void putShortUnaligned(Object o, long offset, short x) {
-        throw new UnsupportedOperationException();
+    private void putLongParts(Object o, long offset, int i0, int i1) {
+        putInt(o, offset + 0, pick(i0, i1));
+        putInt(o, offset + 4, pick(i1, i0));
     }
 
-    @Override
-    public void putShortUnaligned(Object o, long offset, short x, boolean bigEndian) {
-        throw new UnsupportedOperationException();
+    private void putIntParts(Object o, long offset, short i0, short i1) {
+        putShort(o, offset + 0, pick(i0, i1));
+        putShort(o, offset + 2, pick(i1, i0));
     }
 
-    @Override
-    public void putCharUnaligned(Object o, long offset, char x) {
-        throw new UnsupportedOperationException();
+    private void putIntParts(Object o, long offset, byte i0, byte i1, byte i2, byte i3) {
+        putByte(o, offset + 0, pick(i0, i3));
+        putByte(o, offset + 1, pick(i1, i2));
+        putByte(o, offset + 2, pick(i2, i1));
+        putByte(o, offset + 3, pick(i3, i0));
     }
 
-    @Override
-    public void putCharUnaligned(Object o, long offset, char x, boolean bigEndian) {
-        throw new UnsupportedOperationException();
+    private void putShortParts(Object o, long offset, byte i0, byte i1) {
+        putByte(o, offset + 0, pick(i0, i1));
+        putByte(o, offset + 1, pick(i1, i0));
     }
+
+    // Zero-extend an integer
+    private static int toUnsignedInt(byte n) {
+        return n & 0xff;
+    }
+
+    private static int toUnsignedInt(short n) {
+        return n & 0xffff;
+    }
+
+    private static long toUnsignedLong(byte n) {
+        return n & 0xffl;
+    }
+
+    private static long toUnsignedLong(short n) {
+        return n & 0xffffl;
+    }
+
+    private static long toUnsignedLong(int n) {
+        return n & 0xffffffffl;
+    }
+
+    // Maybe byte-reverse an integer
+    private static char convEndian(boolean big, char n) {
+        return big == BIG_ENDIAN ? n : Character.reverseBytes(n);
+    }
+
+    private static short convEndian(boolean big, short n) {
+        return big == BIG_ENDIAN ? n : Short.reverseBytes(n);
+    }
+
+    private static int convEndian(boolean big, int n) {
+        return big == BIG_ENDIAN ? n : Integer.reverseBytes(n);
+    }
+
+    private static long convEndian(boolean big, long n) {
+        return big == BIG_ENDIAN ? n : Long.reverseBytes(n);
+    }
+
+    public final long getLongUnaligned(Object o, long offset) {
+        if ((offset & 7) == 0) {
+            return getLong(o, offset);
+        } else if ((offset & 3) == 0) {
+            return makeLong(getInt(o, offset),
+                    getInt(o, offset + 4));
+        } else if ((offset & 1) == 0) {
+            return makeLong(getShort(o, offset),
+                    getShort(o, offset + 2),
+                    getShort(o, offset + 4),
+                    getShort(o, offset + 6));
+        } else {
+            return makeLong(getByte(o, offset),
+                    getByte(o, offset + 1),
+                    getByte(o, offset + 2),
+                    getByte(o, offset + 3),
+                    getByte(o, offset + 4),
+                    getByte(o, offset + 5),
+                    getByte(o, offset + 6),
+                    getByte(o, offset + 7));
+        }
+    }
+
+    public final long getLongUnaligned(Object o, long offset, boolean bigEndian) {
+        return convEndian(bigEndian, getLongUnaligned(o, offset));
+    }
+
+    public final int getIntUnaligned(Object o, long offset) {
+        if ((offset & 3) == 0) {
+            return getInt(o, offset);
+        } else if ((offset & 1) == 0) {
+            return makeInt(getShort(o, offset),
+                    getShort(o, offset + 2));
+        } else {
+            return makeInt(getByte(o, offset),
+                    getByte(o, offset + 1),
+                    getByte(o, offset + 2),
+                    getByte(o, offset + 3));
+        }
+    }
+
+    public final int getIntUnaligned(Object o, long offset, boolean bigEndian) {
+        return convEndian(bigEndian, getIntUnaligned(o, offset));
+    }
+
+    public final short getShortUnaligned(Object o, long offset) {
+        if ((offset & 1) == 0) {
+            return getShort(o, offset);
+        } else {
+            return makeShort(getByte(o, offset),
+                    getByte(o, offset + 1));
+        }
+    }
+
+    public final short getShortUnaligned(Object o, long offset, boolean bigEndian) {
+        return convEndian(bigEndian, getShortUnaligned(o, offset));
+    }
+
+    public final char getCharUnaligned(Object o, long offset) {
+        if ((offset & 1) == 0) {
+            return getChar(o, offset);
+        } else {
+            return (char) makeShort(getByte(o, offset),
+                    getByte(o, offset + 1));
+        }
+    }
+
+    public final char getCharUnaligned(Object o, long offset, boolean bigEndian) {
+        return convEndian(bigEndian, getCharUnaligned(o, offset));
+    }
+
+    public final void putLongUnaligned(Object o, long offset, long x) {
+        if ((offset & 7) == 0) {
+            putLong(o, offset, x);
+        } else if ((offset & 3) == 0) {
+            putLongParts(o, offset,
+                    (int) (x >> 0),
+                    (int) (x >>> 32));
+        } else if ((offset & 1) == 0) {
+            putLongParts(o, offset,
+                    (short) (x >>> 0),
+                    (short) (x >>> 16),
+                    (short) (x >>> 32),
+                    (short) (x >>> 48));
+        } else {
+            putLongParts(o, offset,
+                    (byte) (x >>> 0),
+                    (byte) (x >>> 8),
+                    (byte) (x >>> 16),
+                    (byte) (x >>> 24),
+                    (byte) (x >>> 32),
+                    (byte) (x >>> 40),
+                    (byte) (x >>> 48),
+                    (byte) (x >>> 56));
+        }
+    }
+
+    public final void putLongUnaligned(Object o, long offset, long x, boolean bigEndian) {
+        putLongUnaligned(o, offset, convEndian(bigEndian, x));
+    }
+
+    public final void putIntUnaligned(Object o, long offset, int x) {
+        if ((offset & 3) == 0) {
+            putInt(o, offset, x);
+        } else if ((offset & 1) == 0) {
+            putIntParts(o, offset,
+                    (short) (x >> 0),
+                    (short) (x >>> 16));
+        } else {
+            putIntParts(o, offset,
+                    (byte) (x >>> 0),
+                    (byte) (x >>> 8),
+                    (byte) (x >>> 16),
+                    (byte) (x >>> 24));
+        }
+    }
+
+    public final void putIntUnaligned(Object o, long offset, int x, boolean bigEndian) {
+        putIntUnaligned(o, offset, convEndian(bigEndian, x));
+    }
+
+    public final void putShortUnaligned(Object o, long offset, short x) {
+        if ((offset & 1) == 0) {
+            putShort(o, offset, x);
+        } else {
+            putShortParts(o, offset,
+                    (byte) (x >>> 0),
+                    (byte) (x >>> 8));
+        }
+    }
+
+    public final void putShortUnaligned(Object o, long offset, short x, boolean bigEndian) {
+        putShortUnaligned(o, offset, convEndian(bigEndian, x));
+    }
+
+    public final void putCharUnaligned(Object o, long offset, char x) {
+        putShortUnaligned(o, offset, (short) x);
+    }
+
+    public final void putCharUnaligned(Object o, long offset, char x, boolean bigEndian) {
+        putCharUnaligned(o, offset, convEndian(bigEndian, x));
+    }
+    // endregion
 
     @Override
     @Analysis.SkipAnalysis
@@ -1724,4 +1932,5 @@ class SunMiscUnsafe extends io.github.karlatemp.unsafeaccessor.Unsafe {
     public void invokeCleaner(ByteBuffer directBuffer) {
         theUnsafe.invokeCleaner(directBuffer);
     }
+
 }
