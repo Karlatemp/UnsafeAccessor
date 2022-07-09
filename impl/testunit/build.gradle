@@ -167,7 +167,7 @@ publishing {
                     developer {
                         id.set('Karlatemp')
                         name.set('Karlatemp')
-                        email.set('karlatemp@vip.qq.com')
+                        email.set('kar@kasukusakura.com')
                     }
                 }
             }
