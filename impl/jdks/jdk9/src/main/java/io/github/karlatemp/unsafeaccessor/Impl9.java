@@ -13,6 +13,7 @@ class Impl9 extends io.github.karlatemp.unsafeaccessor.Unsafe {
     static class UsfHolder {
         static final Unsafe usf = Unsafe.getUnsafe();
 
+        @SuppressWarnings("all")
         static final UsfSpecificMet.DAC DAC = UsfAllocCtx.rc(() -> {
             Class.forName("jdk.internal.misc.Unsafe").getMethod("defineAnonymousClass", Class.class, byte[].class, Object[].class);
             return new UsfSpecificMet.DAC() {
@@ -30,6 +31,11 @@ class Impl9 extends io.github.karlatemp.unsafeaccessor.Unsafe {
     @Override
     public boolean isJava9() {
         return true;
+    }
+
+    @Override
+    public Object getOriginalUnsafe() {
+        return usf;
     }
 
     public int getInt(Object o, long offset) {

@@ -29,7 +29,6 @@ package io.github.karlatemp.unsafeaccessor;
 import org.jetbrains.annotations.Contract;
 
 import java.lang.reflect.Field;
-import java.security.Permission;
 import java.security.ProtectionDomain;
 
 
@@ -67,6 +66,14 @@ public abstract class Unsafe {
     }
 
     /**
+     * Get the original unsafe object.
+     *
+     * @since 1.7.0
+     */
+    @Contract(pure = true)
+    public abstract Object getOriginalUnsafe();
+
+    /**
      * Provides the caller with the capability of performing unsafe
      * operations.
      *
@@ -96,7 +103,8 @@ public abstract class Unsafe {
         return INSTANCE;
     }
 
-    Unsafe() {}
+    Unsafe() {
+    }
 
     static Unsafe getUnsafe0() {
         if (theUnsafe == null) {
@@ -863,9 +871,11 @@ public abstract class Unsafe {
                                          ClassLoader loader,
                                          ProtectionDomain protectionDomain);
 
-    public Class<?> defineClass0(String name, byte[] b, int off, int len,
-                                          ClassLoader loader,
-                                          ProtectionDomain protectionDomain) {
+    public Class<?> defineClass0(
+            String name, byte[] b, int off, int len,
+            ClassLoader loader,
+            ProtectionDomain protectionDomain
+    ) {
         return defineClass(name, b, off, len, loader, protectionDomain);
     }
 

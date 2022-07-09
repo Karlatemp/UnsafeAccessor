@@ -49,6 +49,8 @@ public class TestUnsafe {
         System.out.println("Invoking Unsafe Test Unit....");
 
         Unsafe usf = Unsafe.getUnsafe();
+        //noinspection ResultOfMethodCallIgnored
+        usf.getOriginalUnsafe();
         // region Unsafe.put**, Unsafe.get**
         System.out.println("Testing Unsafe.get**, Unsafe.put**");
         {

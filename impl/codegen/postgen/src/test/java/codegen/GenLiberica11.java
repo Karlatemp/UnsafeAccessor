@@ -40,6 +40,7 @@ public class GenLiberica11 {
                 return super.mapMethodName(owner, name, descriptor);
             }
         }));
+        newClass.innerClasses.clear();
         MethodNode invokeCleaner = newClass.methods.stream().filter(it -> it.name.equals("invokeCleaner")).findFirst().get();
         invokeCleaner.visitAnnotation("Lio/github/karlatemp/unsafeaccessor/Analysis$SkipAnalysis;", false);
 

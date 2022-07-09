@@ -21,6 +21,11 @@ class SunMiscUnsafe extends io.github.karlatemp.unsafeaccessor.Unsafe {
     }
 
     @Override
+    public Object getOriginalUnsafe() {
+        return theUnsafe;
+    }
+
+    @Override
     public long objectFieldOffset(Class<?> c, String name) {
         try {
             return theUnsafe.objectFieldOffset(c.getDeclaredField(name));
@@ -1715,6 +1720,7 @@ class SunMiscUnsafe extends io.github.karlatemp.unsafeaccessor.Unsafe {
 
     @Override
     @Analysis.SkipAnalysis
+    @SuppressWarnings("all")
     public void invokeCleaner(ByteBuffer directBuffer) {
         theUnsafe.invokeCleaner(directBuffer);
     }
