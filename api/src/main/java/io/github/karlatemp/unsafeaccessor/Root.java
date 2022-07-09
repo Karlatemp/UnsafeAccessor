@@ -2,8 +2,7 @@ package io.github.karlatemp.unsafeaccessor;
 
 import org.jetbrains.annotations.Contract;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
+import java.lang.invoke.*;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.util.function.Consumer;
@@ -204,5 +203,153 @@ public class Root {
         if (instance == null) return;
         Unsafe.getUnsafe0().ensureClassInitialized(instance.getClass());
         ObjectInitializer.initializer().accept(instance);
+    }
+
+    /**
+     * Lookup for method handles
+     *
+     * @since 1.7.0
+     */
+    @SuppressWarnings("UnusedReturnValue")
+    public static class MethodHandleLookup {
+        private static void checkAccess(UnsafeAccess access) {
+            if (access == null) {
+                getUnsafe();
+            } else {
+                access.checkTrusted();
+            }
+        }
+
+        public static MethodHandle lookup(
+                UnsafeAccess access,
+                String methodName,
+                MethodType methodType
+        ) throws NoSuchMethodException {
+            return lookup(access, methodName, methodType, false, true);
+        }
+
+        /**
+         * Search a method handle from unsafe instance
+         *
+         * @param access       The unsafe access object. No perm checking when access provided
+         * @param methodName   The name of target method. Eg: {@code "getInt"}
+         * @param methodType   The method type of target method.<br/> Eg: {@code MethodType.methodType(int.class, long.class)}
+         * @param lookupDirect Do the direct search.
+         * @param doBind       Bind the unsafe object to method handle. Provide `false` to run {@link MethodHandles.Lookup#revealDirect(MethodHandle)}
+         */
+        public static MethodHandle lookup(
+                UnsafeAccess access,
+                String methodName,
+                MethodType methodType,
+                boolean lookupDirect,
+                boolean doBind
+        ) throws NoSuchMethodException {
+            checkAccess(access);
+            if (lookupDirect) {
+                return MHLookup.lookupDirect(methodName, methodType, doBind);
+            } else {
+                return MHLookup.lookup(methodName, methodType, doBind ? null : new Object[1]);
+            }
+        }
+
+        private static UnsafeAccess detectUnsafeAccessHold(MethodHandles.Lookup lookup, MethodHandle mh) {
+            if (mh != null) {
+                if (mh.type().parameterCount() != 0) {
+                    throw new IllegalArgumentException("parameters not empty: " + mh);
+                }
+                if (mh.type().returnType() != UnsafeAccess.class) {
+                    throw new IllegalArgumentException("Provided method handle is not a access check handle.");
+                }
+                try {
+                    return (UnsafeAccess) mh.invokeExact();
+                } catch (Error | RuntimeException e) {
+                    throw e;
+                } catch (Throwable throwable) {
+                    throw new InternalError(throwable);
+                }
+            }
+            if (lookup == null) return null;
+            if (lookup == MethodHandles.publicLookup()) return null;
+            try {
+                try {
+                    return detectUnsafeAccessHold(null, lookup.findStaticGetter(
+                            lookup.lookupClass(), "UA", UnsafeAccess.class
+                    ));
+                } catch (NoSuchFieldException ignored) {
+                }
+                try {
+                    return detectUnsafeAccessHold(null, lookup.findStaticGetter(
+                            lookup.lookupClass(), "UNSAFE_ACCESS", UnsafeAccess.class
+                    ));
+                } catch (NoSuchFieldException ignored) {
+                }
+            } catch (IllegalAccessException ignored) {
+                throw new IllegalArgumentException("Provided caller <" + lookup + "> have no full access for itself");
+            }
+            return null;
+        }
+
+        public static CallSite resolveHandle(
+                MethodHandles.Lookup caller,
+                String methodName,
+                MethodType methodType
+        ) throws NoSuchMethodException {
+            return resolve(caller, methodName, methodType, 0, null);
+        }
+
+        public static CallSite resolveHandleDirect(
+                MethodHandles.Lookup caller,
+                String methodName,
+                MethodType methodType
+        ) throws NoSuchMethodException {
+            return resolve(caller, methodName, methodType, 1, null);
+        }
+
+        public static CallSite resolve(
+                MethodHandles.Lookup caller,
+                String methodName,
+                MethodType methodType,
+                int direct,
+                MethodHandle unsafeAccess_static_getter
+        ) throws NoSuchMethodException {
+            return resolve(caller, methodName, methodType, direct, 0, unsafeAccess_static_getter);
+        }
+
+        /**
+         * Resolve a method handle for `invokeDynamic`
+         * <p>
+         * Example: <pre>{@code
+         * mymethod.visitInvokeDynamicInsn("getInt", "(J)I", new Handle(
+         *         Opcodes.H_INVOKESTATIC,
+         *         "io/github/karlatemp/unsafeaccessor/Root$MethodHandleLookup",
+         *         "resolve", "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;IILjava/lang/invoke/MethodHandle;)Ljava/lang/invoke/CallSite;", false
+         * ), 0, 0, new Handle(
+         *         Opcodes.H_GETSTATIC,
+         *         "org/example/generated/MyClass", "UNSAFE_ACCESS", "Lio/github/karlatemp/unsafeaccessor/UnsafeAccess;",
+         *         false
+         * ));
+         * }</pre>
+         *
+         * @param noCallerCheck              if {@code true}, will skip caller permission detect
+         * @param unsafeAccess_static_getter The handle to get an unsafe-access instance. <br/>
+         */
+        public static CallSite resolve(
+                MethodHandles.Lookup caller,
+                String methodName,
+                MethodType methodType,
+                int direct,
+                int noCallerCheck,
+                MethodHandle unsafeAccess_static_getter
+        ) throws NoSuchMethodException {
+            return new ConstantCallSite(
+                    lookup(detectUnsafeAccessHold(icb(noCallerCheck) ? null : caller, unsafeAccess_static_getter),
+                            methodName, methodType, icb(direct), true
+                    )
+            );
+        }
+
+        private static boolean icb(int v) {
+            return v != 0;
+        }
     }
 }

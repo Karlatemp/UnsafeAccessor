@@ -14,7 +14,6 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @TestTask(name = "BinaryCompatibilityAnalysis")
@@ -121,7 +120,11 @@ public class BinaryCompatibilityAnalysis {
                                     lookup.findConstructor(ownerClass, methodType);
                                     break;
                                 }
-                                throw new AssertionError("INVOKESPECIAL with-out <init>");
+                                MethodHandle handle = lookup.findVirtual(ownerClass, methodName, methodType);
+                                MethodHandleInfo handleInfo = lookup.revealDirect(handle);
+                                Assertions.assertEquals(handleInfo.getDeclaringClass(), ownerClass);
+                                Assertions.assertEquals(handleInfo.getReferenceKind(), MethodHandleInfo.REF_invokeVirtual);
+                                break;
                             }
                             default:
                                 throw new AssertionError("Unknown opcode: " + methodInsnNode.getOpcode() + "(" + Integer.toHexString(methodInsnNode.getOpcode()) + ")");
