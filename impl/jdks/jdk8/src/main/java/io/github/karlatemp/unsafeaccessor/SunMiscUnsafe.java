@@ -42,92 +42,92 @@ class SunMiscUnsafe extends io.github.karlatemp.unsafeaccessor.Unsafe {
 
     @Override
     public Object getReferenceAcquire(Object o, long offset) {
-        return theUnsafe.getObject(o, offset);
+        return theUnsafe.getObjectVolatile(o, offset);
     }
 
     @Override
     public boolean getBooleanAcquire(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getBooleanVolatile(o, offset);
     }
 
     @Override
     public byte getByteAcquire(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getByteVolatile(o, offset);
     }
 
     @Override
     public short getShortAcquire(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getShortVolatile(o, offset);
     }
 
     @Override
     public char getCharAcquire(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getCharVolatile(o, offset);
     }
 
     @Override
     public int getIntAcquire(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getIntVolatile(o, offset);
     }
 
     @Override
     public float getFloatAcquire(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getFloatVolatile(o, offset);
     }
 
     @Override
     public long getLongAcquire(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getLongVolatile(o, offset);
     }
 
     @Override
     public double getDoubleAcquire(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getDoubleVolatile(o, offset);
     }
 
     @Override
     public Object getReferenceOpaque(Object o, long offset) {
-        return theUnsafe.getObject(o, offset);
+        return theUnsafe.getObjectVolatile(o, offset);
     }
 
     @Override
     public boolean getBooleanOpaque(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getBooleanVolatile(o, offset);
     }
 
     @Override
     public byte getByteOpaque(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getByteVolatile(o, offset);
     }
 
     @Override
     public short getShortOpaque(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getShortVolatile(o, offset);
     }
 
     @Override
     public char getCharOpaque(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getCharVolatile(o, offset);
     }
 
     @Override
     public int getIntOpaque(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getIntVolatile(o, offset);
     }
 
     @Override
     public float getFloatOpaque(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getFloatVolatile(o, offset);
     }
 
     @Override
     public long getLongOpaque(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getLongVolatile(o, offset);
     }
 
     @Override
     public double getDoubleOpaque(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getDoubleVolatile(o, offset);
     }
 
     @Override
@@ -137,92 +137,92 @@ class SunMiscUnsafe extends io.github.karlatemp.unsafeaccessor.Unsafe {
 
     @Override
     public void putReferenceOpaque(Object o, long offset, Object x) {
-        theUnsafe.putObject(o, offset, x);
+        theUnsafe.putObjectVolatile(o, offset, x);
     }
 
     @Override
     public void putBooleanOpaque(Object o, long offset, boolean x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putBooleanVolatile(o, offset, x);
     }
 
     @Override
     public void putByteOpaque(Object o, long offset, byte x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putByteVolatile(o, offset, x);
     }
 
     @Override
     public void putShortOpaque(Object o, long offset, short x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putShortVolatile(o, offset, x);
     }
 
     @Override
     public void putCharOpaque(Object o, long offset, char x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putCharVolatile(o, offset, x);
     }
 
     @Override
     public void putIntOpaque(Object o, long offset, int x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putIntVolatile(o, offset, x);
     }
 
     @Override
     public void putFloatOpaque(Object o, long offset, float x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putFloatVolatile(o, offset, x);
     }
 
     @Override
     public void putLongOpaque(Object o, long offset, long x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putLongVolatile(o, offset, x);
     }
 
     @Override
     public void putDoubleOpaque(Object o, long offset, double x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putDoubleVolatile(o, offset, x);
     }
 
     @Override
     public void putReferenceRelease(Object o, long offset, Object x) {
-        theUnsafe.putObject(o, offset, x);
+        theUnsafe.putObjectVolatile(o, offset, x);
     }
 
     @Override
     public void putBooleanRelease(Object o, long offset, boolean x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putBooleanVolatile(o, offset, x);
     }
 
     @Override
     public void putByteRelease(Object o, long offset, byte x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putByteVolatile(o, offset, x);
     }
 
     @Override
     public void putShortRelease(Object o, long offset, short x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putShortVolatile(o, offset, x);
     }
 
     @Override
     public void putCharRelease(Object o, long offset, char x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putCharVolatile(o, offset, x);
     }
 
     @Override
     public void putIntRelease(Object o, long offset, int x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putIntVolatile(o, offset, x);
     }
 
     @Override
     public void putFloatRelease(Object o, long offset, float x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putFloatVolatile(o, offset, x);
     }
 
     @Override
     public void putLongRelease(Object o, long offset, long x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putLongVolatile(o, offset, x);
     }
 
     @Override
     public void putDoubleRelease(Object o, long offset, double x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putDoubleVolatile(o, offset, x);
     }
 
     @Override
@@ -517,7 +517,24 @@ class SunMiscUnsafe extends io.github.karlatemp.unsafeaccessor.Unsafe {
 
     @Override
     public Object allocateUninitializedArray(Class<?> componentType, int length) {
-        throw new UnsupportedOperationException();
+        if (componentType == null) {
+            throw new IllegalArgumentException("Component type is null");
+        }
+        if (!componentType.isPrimitive()) {
+            throw new IllegalArgumentException("Component type is not primitive");
+        }
+        if (length < 0) {
+            throw new IllegalArgumentException("Negative length");
+        }
+        if (componentType == byte.class)    /**/ return new byte[length];
+        if (componentType == boolean.class) /**/ return new boolean[length];
+        if (componentType == short.class)   /**/ return new short[length];
+        if (componentType == char.class)    /**/ return new char[length];
+        if (componentType == int.class)     /**/ return new int[length];
+        if (componentType == float.class)   /**/ return new float[length];
+        if (componentType == long.class)    /**/ return new long[length];
+        if (componentType == double.class)  /**/ return new double[length];
+        return null;
     }
 
     @Override
@@ -527,367 +544,447 @@ class SunMiscUnsafe extends io.github.karlatemp.unsafeaccessor.Unsafe {
 
     @Override
     public boolean compareAndSetReference(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapObject(o, offset, expected, x);
     }
 
     @Override
     public Object compareAndExchangeReference(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        while (true) {
+            Object witness = theUnsafe.getObjectVolatile(o, offset);
+            if (witness != expected) {
+                return witness;
+            }
+            if (theUnsafe.compareAndSwapObject(o, offset, witness, x)) {
+                return witness;
+            }
+        }
     }
 
     @Override
     public Object compareAndExchangeReferenceAcquire(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeReference(o, offset, expected, x);
     }
 
     @Override
     public Object compareAndExchangeReferenceRelease(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeReference(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetReferencePlain(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapObject(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetReferenceAcquire(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapObject(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetReferenceRelease(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapObject(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetReference(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapObject(o, offset, expected, x);
     }
 
     @Override
     public boolean compareAndSetInt(Object o, long offset, int expected, int x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapInt(o, offset, expected, x);
     }
 
     @Override
     public int compareAndExchangeInt(Object o, long offset, int expected, int x) {
-        throw new UnsupportedOperationException();
+        while (true) {
+            int witness = theUnsafe.getIntVolatile(o, offset);
+            if (witness != expected) {
+                return witness;
+            }
+            if (theUnsafe.compareAndSwapInt(o, offset, witness, x)) {
+                return witness;
+            }
+        }
     }
 
     @Override
     public int compareAndExchangeIntAcquire(Object o, long offset, int expected, int x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeInt(o, offset, expected, x);
     }
 
     @Override
     public int compareAndExchangeIntRelease(Object o, long offset, int expected, int x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeInt(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetIntPlain(Object o, long offset, int expected, int x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetInt(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetIntAcquire(Object o, long offset, int expected, int x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetInt(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetIntRelease(Object o, long offset, int expected, int x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapInt(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetInt(Object o, long offset, int expected, int x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapInt(o, offset, expected, x);
     }
 
     @Override
     public byte compareAndExchangeByte(Object o, long offset, byte expected, byte x) {
-        throw new UnsupportedOperationException();
+        long wordOffset = offset & ~3;
+        int shift = (int) (offset & 3) << 3;
+        if (BIG_ENDIAN) {
+            shift = 24 - shift;
+        }
+        int mask = 0xFF << shift;
+        int maskedExpected = (expected & 0xFF) << shift;
+        int maskedX = (x & 0xFF) << shift;
+        int fullWord;
+        do {
+            fullWord = getIntVolatile(o, wordOffset);
+            if ((fullWord & mask) != maskedExpected)
+                return (byte) ((fullWord & mask) >> shift);
+        } while (!weakCompareAndSetInt(o, wordOffset,
+                fullWord, (fullWord & ~mask) | maskedX));
+        return expected;
     }
 
     @Override
     public boolean compareAndSetByte(Object o, long offset, byte expected, byte x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeByte(o, offset, expected, x) == expected;
     }
 
     @Override
     public boolean weakCompareAndSetByte(Object o, long offset, byte expected, byte x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetByte(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetByteAcquire(Object o, long offset, byte expected, byte x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetByte(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetByteRelease(Object o, long offset, byte expected, byte x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetByte(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetBytePlain(Object o, long offset, byte expected, byte x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetByte(o, offset, expected, x);
     }
 
     @Override
     public byte compareAndExchangeByteAcquire(Object o, long offset, byte expected, byte x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeByte(o, offset, expected, x);
     }
 
     @Override
     public byte compareAndExchangeByteRelease(Object o, long offset, byte expected, byte x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeByte(o, offset, expected, x);
     }
 
     @Override
     public short compareAndExchangeShort(Object o, long offset, short expected, short x) {
-        throw new UnsupportedOperationException();
+        if ((offset & 3) == 3) {
+            throw new IllegalArgumentException("Update spans the word, not supported");
+        }
+        long wordOffset = offset & ~3;
+        int shift = (int) (offset & 3) << 3;
+        if (BIG_ENDIAN) {
+            shift = 16 - shift;
+        }
+        int mask = 0xFFFF << shift;
+        int maskedExpected = (expected & 0xFFFF) << shift;
+        int maskedX = (x & 0xFFFF) << shift;
+        int fullWord;
+        do {
+            fullWord = getIntVolatile(o, wordOffset);
+            if ((fullWord & mask) != maskedExpected) {
+                return (short) ((fullWord & mask) >> shift);
+            }
+        } while (!weakCompareAndSetInt(o, wordOffset,
+                fullWord, (fullWord & ~mask) | maskedX));
+        return expected;
     }
 
     @Override
     public boolean compareAndSetShort(Object o, long offset, short expected, short x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeShort(o, offset, expected, x) == expected;
     }
 
     @Override
     public boolean weakCompareAndSetShort(Object o, long offset, short expected, short x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetShort(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetShortAcquire(Object o, long offset, short expected, short x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetShort(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetShortRelease(Object o, long offset, short expected, short x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetShort(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetShortPlain(Object o, long offset, short expected, short x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetShort(o, offset, expected, x);
     }
 
     @Override
     public short compareAndExchangeShortAcquire(Object o, long offset, short expected, short x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeShort(o, offset, expected, x);
     }
 
     @Override
     public short compareAndExchangeShortRelease(Object o, long offset, short expected, short x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeShort(o, offset, expected, x);
     }
 
     @Override
     public boolean compareAndSetChar(Object o, long offset, char expected, char x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetShort(o, offset, (short) expected, (short) x);
     }
 
     @Override
     public char compareAndExchangeChar(Object o, long offset, char expected, char x) {
-        throw new UnsupportedOperationException();
+        return (char) compareAndExchangeShort(o, offset, (short) expected, (short) x);
     }
 
     @Override
     public char compareAndExchangeCharAcquire(Object o, long offset, char expected, char x) {
-        throw new UnsupportedOperationException();
+        return (char) compareAndExchangeShort(o, offset, (short) expected, (short) x);
     }
 
     @Override
     public char compareAndExchangeCharRelease(Object o, long offset, char expected, char x) {
-        throw new UnsupportedOperationException();
+        return (char) compareAndExchangeShort(o, offset, (short) expected, (short) x);
     }
 
     @Override
     public boolean weakCompareAndSetChar(Object o, long offset, char expected, char x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetShort(o, offset, (short) expected, (short) x);
     }
 
     @Override
     public boolean weakCompareAndSetCharAcquire(Object o, long offset, char expected, char x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetShort(o, offset, (short) expected, (short) x);
     }
 
     @Override
     public boolean weakCompareAndSetCharRelease(Object o, long offset, char expected, char x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetShort(o, offset, (short) expected, (short) x);
     }
 
     @Override
     public boolean weakCompareAndSetCharPlain(Object o, long offset, char expected, char x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetShort(o, offset, (short) expected, (short) x);
     }
 
     @Override
     public boolean compareAndSetBoolean(Object o, long offset, boolean expected, boolean x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetByte(o, offset, expected ? (byte) 1 : 0, x ? (byte) 1 : 0);
     }
 
     @Override
     public boolean compareAndExchangeBoolean(Object o, long offset, boolean expected, boolean x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeByte(o, offset, expected ? (byte) 1 : 0, x ? (byte) 1 : 0) != 0;
     }
 
     @Override
     public boolean compareAndExchangeBooleanAcquire(Object o, long offset, boolean expected, boolean x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeByte(o, offset, expected ? (byte) 1 : 0, x ? (byte) 1 : 0) != 0;
     }
 
     @Override
     public boolean compareAndExchangeBooleanRelease(Object o, long offset, boolean expected, boolean x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeByte(o, offset, expected ? (byte) 1 : 0, x ? (byte) 1 : 0) != 0;
     }
 
     @Override
     public boolean weakCompareAndSetBoolean(Object o, long offset, boolean expected, boolean x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetByte(o, offset, expected ? (byte) 1 : 0, x ? (byte) 1 : 0);
     }
 
     @Override
     public boolean weakCompareAndSetBooleanAcquire(Object o, long offset, boolean expected, boolean x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetByte(o, offset, expected ? (byte) 1 : 0, x ? (byte) 1 : 0);
     }
 
     @Override
     public boolean weakCompareAndSetBooleanRelease(Object o, long offset, boolean expected, boolean x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetByte(o, offset, expected ? (byte) 1 : 0, x ? (byte) 1 : 0);
     }
 
     @Override
     public boolean weakCompareAndSetBooleanPlain(Object o, long offset, boolean expected, boolean x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetByte(o, offset, expected ? (byte) 1 : 0, x ? (byte) 1 : 0);
     }
 
     @Override
     public boolean compareAndSetFloat(Object o, long offset, float expected, float x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetInt(o, offset, Float.floatToRawIntBits(expected), Float.floatToRawIntBits(x));
     }
 
     @Override
     public float compareAndExchangeFloat(Object o, long offset, float expected, float x) {
-        throw new UnsupportedOperationException();
+        return Float.intBitsToFloat(
+                compareAndExchangeInt(o, offset, Float.floatToRawIntBits(expected), Float.floatToRawIntBits(x))
+        );
     }
 
     @Override
     public float compareAndExchangeFloatAcquire(Object o, long offset, float expected, float x) {
-        throw new UnsupportedOperationException();
+        return Float.intBitsToFloat(
+                compareAndExchangeInt(o, offset, Float.floatToRawIntBits(expected), Float.floatToRawIntBits(x))
+        );
     }
 
     @Override
     public float compareAndExchangeFloatRelease(Object o, long offset, float expected, float x) {
-        throw new UnsupportedOperationException();
+        return Float.intBitsToFloat(
+                compareAndExchangeInt(o, offset, Float.floatToRawIntBits(expected), Float.floatToRawIntBits(x))
+        );
     }
 
     @Override
     public boolean weakCompareAndSetFloatPlain(Object o, long offset, float expected, float x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetInt(o, offset, Float.floatToRawIntBits(expected), Float.floatToRawIntBits(x));
     }
 
     @Override
     public boolean weakCompareAndSetFloatAcquire(Object o, long offset, float expected, float x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetInt(o, offset, Float.floatToRawIntBits(expected), Float.floatToRawIntBits(x));
     }
 
     @Override
     public boolean weakCompareAndSetFloatRelease(Object o, long offset, float expected, float x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetInt(o, offset, Float.floatToRawIntBits(expected), Float.floatToRawIntBits(x));
     }
 
     @Override
     public boolean weakCompareAndSetFloat(Object o, long offset, float expected, float x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetInt(o, offset, Float.floatToRawIntBits(expected), Float.floatToRawIntBits(x));
     }
 
     @Override
     public boolean compareAndSetDouble(Object o, long offset, double expected, double x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetLong(o, offset,
+                Double.doubleToRawLongBits(expected),
+                Double.doubleToRawLongBits(x));
     }
 
     @Override
     public double compareAndExchangeDouble(Object o, long offset, double expected, double x) {
-        throw new UnsupportedOperationException();
+        return Double.longBitsToDouble(
+                compareAndExchangeLong(o, offset, Double.doubleToRawLongBits(expected), Double.doubleToRawLongBits(x))
+        );
     }
 
     @Override
     public double compareAndExchangeDoubleAcquire(Object o, long offset, double expected, double x) {
-        throw new UnsupportedOperationException();
+        return Double.longBitsToDouble(
+                compareAndExchangeLong(o, offset, Double.doubleToRawLongBits(expected), Double.doubleToRawLongBits(x))
+        );
     }
 
     @Override
     public double compareAndExchangeDoubleRelease(Object o, long offset, double expected, double x) {
-        throw new UnsupportedOperationException();
+        return Double.longBitsToDouble(
+                compareAndExchangeLong(o, offset, Double.doubleToRawLongBits(expected), Double.doubleToRawLongBits(x))
+        );
     }
 
     @Override
     public boolean weakCompareAndSetDoublePlain(Object o, long offset, double expected, double x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetLong(o, offset,
+                Double.doubleToRawLongBits(expected),
+                Double.doubleToRawLongBits(x));
     }
 
     @Override
     public boolean weakCompareAndSetDoubleAcquire(Object o, long offset, double expected, double x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetLong(o, offset,
+                Double.doubleToRawLongBits(expected),
+                Double.doubleToRawLongBits(x));
     }
 
     @Override
     public boolean weakCompareAndSetDoubleRelease(Object o, long offset, double expected, double x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetLong(o, offset,
+                Double.doubleToRawLongBits(expected),
+                Double.doubleToRawLongBits(x));
     }
 
     @Override
     public boolean weakCompareAndSetDouble(Object o, long offset, double expected, double x) {
-        throw new UnsupportedOperationException();
+        return compareAndSetLong(o, offset,
+                Double.doubleToRawLongBits(expected),
+                Double.doubleToRawLongBits(x));
     }
 
     @Override
     public boolean compareAndSetLong(Object o, long offset, long expected, long x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapLong(o, offset, expected, x);
     }
 
     @Override
     public long compareAndExchangeLong(Object o, long offset, long expected, long x) {
-        throw new UnsupportedOperationException();
+        while (true) {
+            long witness = theUnsafe.getLongVolatile(o, offset);
+            if (witness != expected) {
+                return witness;
+            }
+            if (theUnsafe.compareAndSwapLong(o, offset, witness, x)) {
+                return witness;
+            }
+        }
     }
 
     @Override
     public long compareAndExchangeLongAcquire(Object o, long offset, long expected, long x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeLong(o, offset, expected, x);
     }
 
     @Override
     public long compareAndExchangeLongRelease(Object o, long offset, long expected, long x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeLong(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetLongPlain(Object o, long offset, long expected, long x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapLong(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetLongAcquire(Object o, long offset, long expected, long x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapLong(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetLongRelease(Object o, long offset, long expected, long x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapLong(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetLong(Object o, long offset, long expected, long x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapLong(o, offset, expected, x);
     }
 
     @Override
     public Object getReferenceVolatile(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getObjectVolatile(o, offset);
     }
 
     public boolean compareAndSwapObject(Object o, long offset, Object expected, Object x) {
@@ -909,12 +1006,12 @@ class SunMiscUnsafe extends io.github.karlatemp.unsafeaccessor.Unsafe {
 
     @Override
     public Object getObjectAcquire(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getObjectVolatile(o, offset);
     }
 
     @Override
     public Object getObjectOpaque(Object o, long offset) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getObjectVolatile(o, offset);
     }
 
     @Override
@@ -924,67 +1021,75 @@ class SunMiscUnsafe extends io.github.karlatemp.unsafeaccessor.Unsafe {
 
     @Override
     public void putObjectOpaque(Object o, long offset, Object x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putObjectVolatile(o, offset, x);
     }
 
     @Override
     public void putObjectRelease(Object o, long offset, Object x) {
-        throw new UnsupportedOperationException();
+        theUnsafe.putObjectVolatile(o, offset, x);
     }
 
     @Override
     public Object getAndSetObject(Object o, long offset, Object newValue) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndSetObject(o, offset, newValue);
     }
 
     @Override
     public Object getAndSetObjectAcquire(Object o, long offset, Object newValue) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndSetObject(o, offset, newValue);
     }
 
     @Override
     public Object getAndSetObjectRelease(Object o, long offset, Object newValue) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndSetObject(o, offset, newValue);
     }
 
     @Override
     public boolean compareAndSetObject(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapObject(o, offset, expected, x);
     }
 
     @Override
     public Object compareAndExchangeObject(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        while (true) {
+            Object witness = theUnsafe.getObjectVolatile(o, offset);
+            if (witness != expected) {
+                return witness;
+            }
+            if (theUnsafe.compareAndSwapObject(o, offset, witness, x)) {
+                return witness;
+            }
+        }
     }
 
     @Override
     public Object compareAndExchangeObjectAcquire(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeObject(o, offset, expected, x);
     }
 
     @Override
     public Object compareAndExchangeObjectRelease(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        return compareAndExchangeObject(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetObject(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapObject(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetObjectAcquire(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapObject(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetObjectPlain(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapObject(o, offset, expected, x);
     }
 
     @Override
     public boolean weakCompareAndSetObjectRelease(Object o, long offset, Object expected, Object x) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.compareAndSwapObject(o, offset, expected, x);
     }
 
     @Override
@@ -1096,512 +1201,608 @@ class SunMiscUnsafe extends io.github.karlatemp.unsafeaccessor.Unsafe {
 
     @Override
     public int getAndAddInt(Object o, long offset, int delta) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndAddInt(o, offset, delta);
     }
 
     @Override
     public int getAndAddIntRelease(Object o, long offset, int delta) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndAddInt(o, offset, delta);
     }
 
     @Override
     public int getAndAddIntAcquire(Object o, long offset, int delta) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndAddInt(o, offset, delta);
     }
 
     @Override
     public long getAndAddLong(Object o, long offset, long delta) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndAddLong(o, offset, delta);
     }
 
     @Override
     public long getAndAddLongRelease(Object o, long offset, long delta) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndAddLong(o, offset, delta);
     }
 
     @Override
     public long getAndAddLongAcquire(Object o, long offset, long delta) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndAddLong(o, offset, delta);
     }
 
     @Override
     public byte getAndAddByte(Object o, long offset, byte delta) {
-        throw new UnsupportedOperationException();
+        byte v;
+        do {
+            v = getByteVolatile(o, offset);
+        } while (!weakCompareAndSetByte(o, offset, v, (byte) (v + delta)));
+        return v;
     }
 
     @Override
     public byte getAndAddByteRelease(Object o, long offset, byte delta) {
-        throw new UnsupportedOperationException();
+        return getAndAddByte(o, offset, delta);
     }
 
     @Override
     public byte getAndAddByteAcquire(Object o, long offset, byte delta) {
-        throw new UnsupportedOperationException();
+        return getAndAddByte(o, offset, delta);
     }
 
     @Override
     public short getAndAddShort(Object o, long offset, short delta) {
-        throw new UnsupportedOperationException();
+        short v;
+        do {
+            v = getShortVolatile(o, offset);
+        } while (!weakCompareAndSetShort(o, offset, v, (short) (v + delta)));
+        return v;
     }
 
     @Override
     public short getAndAddShortRelease(Object o, long offset, short delta) {
-        throw new UnsupportedOperationException();
+        return getAndAddShort(o, offset, delta);
     }
 
     @Override
     public short getAndAddShortAcquire(Object o, long offset, short delta) {
-        throw new UnsupportedOperationException();
+        return getAndAddShort(o, offset, delta);
     }
 
     @Override
     public char getAndAddChar(Object o, long offset, char delta) {
-        throw new UnsupportedOperationException();
+        return (char) getAndAddShort(o, offset, (short) delta);
     }
 
     @Override
     public char getAndAddCharRelease(Object o, long offset, char delta) {
-        throw new UnsupportedOperationException();
+        return (char) getAndAddShort(o, offset, (short) delta);
     }
 
     @Override
     public char getAndAddCharAcquire(Object o, long offset, char delta) {
-        throw new UnsupportedOperationException();
+        return (char) getAndAddShort(o, offset, (short) delta);
     }
 
     @Override
     public float getAndAddFloat(Object o, long offset, float delta) {
-        throw new UnsupportedOperationException();
+        int expectedBits;
+        float v;
+        do {
+            // Load and CAS with the raw bits to avoid issues with NaNs and
+            // possible bit conversion from signaling NaNs to quiet NaNs that
+            // may result in the loop not terminating.
+            expectedBits = getIntVolatile(o, offset);
+            v = Float.intBitsToFloat(expectedBits);
+        } while (!weakCompareAndSetInt(o, offset,
+                expectedBits, Float.floatToRawIntBits(v + delta)));
+        return v;
     }
 
     @Override
     public float getAndAddFloatRelease(Object o, long offset, float delta) {
-        throw new UnsupportedOperationException();
+        return getAndAddFloat(o, offset, delta);
     }
 
     @Override
     public float getAndAddFloatAcquire(Object o, long offset, float delta) {
-        throw new UnsupportedOperationException();
+        return getAndAddFloat(o, offset, delta);
     }
 
     @Override
     public double getAndAddDouble(Object o, long offset, double delta) {
-        throw new UnsupportedOperationException();
+        long expectedBits;
+        double v;
+        do {
+            // Load and CAS with the raw bits to avoid issues with NaNs and
+            // possible bit conversion from signaling NaNs to quiet NaNs that
+            // may result in the loop not terminating.
+            expectedBits = getLongVolatile(o, offset);
+            v = Double.longBitsToDouble(expectedBits);
+        } while (!weakCompareAndSetLong(o, offset,
+                expectedBits, Double.doubleToRawLongBits(v + delta)));
+        return v;
     }
 
     @Override
     public double getAndAddDoubleRelease(Object o, long offset, double delta) {
-        throw new UnsupportedOperationException();
+        return getAndAddDouble(o, offset, delta);
     }
 
     @Override
     public double getAndAddDoubleAcquire(Object o, long offset, double delta) {
-        throw new UnsupportedOperationException();
+        return getAndAddDouble(o, offset, delta);
     }
 
     @Override
     public int getAndSetInt(Object o, long offset, int newValue) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndSetInt(o, offset, newValue);
     }
 
     @Override
     public int getAndSetIntRelease(Object o, long offset, int newValue) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndSetInt(o, offset, newValue);
     }
 
     @Override
     public int getAndSetIntAcquire(Object o, long offset, int newValue) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndSetInt(o, offset, newValue);
     }
 
     @Override
     public long getAndSetLong(Object o, long offset, long newValue) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndSetLong(o, offset, newValue);
     }
 
     @Override
     public long getAndSetLongRelease(Object o, long offset, long newValue) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndSetLong(o, offset, newValue);
     }
 
     @Override
     public long getAndSetLongAcquire(Object o, long offset, long newValue) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndSetLong(o, offset, newValue);
     }
 
     @Override
     public Object getAndSetReference(Object o, long offset, Object newValue) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndSetObject(o, offset, newValue);
     }
 
     @Override
     public Object getAndSetReferenceRelease(Object o, long offset, Object newValue) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndSetObject(o, offset, newValue);
     }
 
     @Override
     public Object getAndSetReferenceAcquire(Object o, long offset, Object newValue) {
-        throw new UnsupportedOperationException();
+        return theUnsafe.getAndSetObject(o, offset, newValue);
     }
 
     @Override
     public byte getAndSetByte(Object o, long offset, byte newValue) {
-        throw new UnsupportedOperationException();
+        byte v;
+        do {
+            v = getByteVolatile(o, offset);
+        } while (!weakCompareAndSetByte(o, offset, v, newValue));
+        return v;
     }
 
     @Override
     public byte getAndSetByteRelease(Object o, long offset, byte newValue) {
-        throw new UnsupportedOperationException();
+        return getAndSetByte(o, offset, newValue);
     }
 
     @Override
     public byte getAndSetByteAcquire(Object o, long offset, byte newValue) {
-        throw new UnsupportedOperationException();
+        return getAndSetByte(o, offset, newValue);
     }
 
     @Override
     public boolean getAndSetBoolean(Object o, long offset, boolean newValue) {
-        throw new UnsupportedOperationException();
+        return getAndSetByte(o, offset, newValue ? (byte) 1 : 0) != 0;
     }
 
     @Override
     public boolean getAndSetBooleanRelease(Object o, long offset, boolean newValue) {
-        throw new UnsupportedOperationException();
+        return getAndSetByte(o, offset, newValue ? (byte) 1 : 0) != 0;
     }
 
     @Override
     public boolean getAndSetBooleanAcquire(Object o, long offset, boolean newValue) {
-        throw new UnsupportedOperationException();
+        return getAndSetByte(o, offset, newValue ? (byte) 1 : 0) != 0;
     }
 
     @Override
     public short getAndSetShort(Object o, long offset, short newValue) {
-        throw new UnsupportedOperationException();
+        short v;
+        do {
+            v = getShortVolatile(o, offset);
+        } while (!weakCompareAndSetShort(o, offset, v, newValue));
+        return v;
     }
 
     @Override
     public short getAndSetShortRelease(Object o, long offset, short newValue) {
-        throw new UnsupportedOperationException();
+        return getAndSetShort(o, offset, newValue);
     }
 
     @Override
     public short getAndSetShortAcquire(Object o, long offset, short newValue) {
-        throw new UnsupportedOperationException();
+        return getAndSetShort(o, offset, newValue);
     }
 
     @Override
     public char getAndSetChar(Object o, long offset, char newValue) {
-        throw new UnsupportedOperationException();
+        return (char) getAndSetShort(o, offset, (short) newValue);
     }
 
     @Override
     public char getAndSetCharRelease(Object o, long offset, char newValue) {
-        throw new UnsupportedOperationException();
+        return (char) getAndSetShort(o, offset, (short) newValue);
     }
 
     @Override
     public char getAndSetCharAcquire(Object o, long offset, char newValue) {
-        throw new UnsupportedOperationException();
+        return (char) getAndSetShort(o, offset, (short) newValue);
     }
 
     @Override
     public float getAndSetFloat(Object o, long offset, float newValue) {
-        throw new UnsupportedOperationException();
+        return Float.intBitsToFloat(getAndSetInt(o, offset, Float.floatToRawIntBits(newValue)));
     }
 
     @Override
     public float getAndSetFloatRelease(Object o, long offset, float newValue) {
-        throw new UnsupportedOperationException();
+        return Float.intBitsToFloat(getAndSetInt(o, offset, Float.floatToRawIntBits(newValue)));
     }
 
     @Override
     public float getAndSetFloatAcquire(Object o, long offset, float newValue) {
-        throw new UnsupportedOperationException();
+        return Float.intBitsToFloat(getAndSetInt(o, offset, Float.floatToRawIntBits(newValue)));
     }
 
     @Override
     public double getAndSetDouble(Object o, long offset, double newValue) {
-        throw new UnsupportedOperationException();
+        return Double.longBitsToDouble(getAndSetLong(o, offset, Double.doubleToRawLongBits(newValue)));
     }
 
     @Override
     public double getAndSetDoubleRelease(Object o, long offset, double newValue) {
-        throw new UnsupportedOperationException();
+        return Double.longBitsToDouble(getAndSetLong(o, offset, Double.doubleToRawLongBits(newValue)));
     }
 
     @Override
     public double getAndSetDoubleAcquire(Object o, long offset, double newValue) {
-        throw new UnsupportedOperationException();
+        return Double.longBitsToDouble(getAndSetLong(o, offset, Double.doubleToRawLongBits(newValue)));
     }
 
     @Override
     public boolean getAndBitwiseOrBoolean(Object o, long offset, boolean mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseOrByte(o, offset, mask ? (byte) 1 : 0) != 0;
     }
 
     @Override
     public boolean getAndBitwiseOrBooleanRelease(Object o, long offset, boolean mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseOrByte(o, offset, mask ? (byte) 1 : 0) != 0;
     }
 
     @Override
     public boolean getAndBitwiseOrBooleanAcquire(Object o, long offset, boolean mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseOrByte(o, offset, mask ? (byte) 1 : 0) != 0;
     }
 
     @Override
     public boolean getAndBitwiseAndBoolean(Object o, long offset, boolean mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseAndByte(o, offset, mask ? (byte) 1 : 0) != 0;
     }
 
     @Override
     public boolean getAndBitwiseAndBooleanRelease(Object o, long offset, boolean mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseAndByte(o, offset, mask ? (byte) 1 : 0) != 0;
     }
 
     @Override
     public boolean getAndBitwiseAndBooleanAcquire(Object o, long offset, boolean mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseAndByte(o, offset, mask ? (byte) 1 : 0) != 0;
     }
 
     @Override
     public boolean getAndBitwiseXorBoolean(Object o, long offset, boolean mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseXorByte(o, offset, mask ? (byte) 1 : 0) != 0;
     }
 
     @Override
     public boolean getAndBitwiseXorBooleanRelease(Object o, long offset, boolean mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseXorByte(o, offset, mask ? (byte) 1 : 0) != 0;
     }
 
     @Override
     public boolean getAndBitwiseXorBooleanAcquire(Object o, long offset, boolean mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseXorByte(o, offset, mask ? (byte) 1 : 0) != 0;
     }
 
     @Override
     public byte getAndBitwiseOrByte(Object o, long offset, byte mask) {
-        throw new UnsupportedOperationException();
+        byte current;
+        do {
+            current = getByte(o, offset);
+        } while (!weakCompareAndSetByteRelease(o, offset,
+                current, (byte) (current | mask)));
+        return current;
     }
 
     @Override
     public byte getAndBitwiseOrByteRelease(Object o, long offset, byte mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseOrByte(o, offset, mask);
     }
 
     @Override
     public byte getAndBitwiseOrByteAcquire(Object o, long offset, byte mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseOrByte(o, offset, mask);
     }
 
     @Override
     public byte getAndBitwiseAndByte(Object o, long offset, byte mask) {
-        throw new UnsupportedOperationException();
+        byte current;
+        do {
+            current = getByte(o, offset);
+        } while (!weakCompareAndSetByteRelease(o, offset,
+                current, (byte) (current & mask)));
+        return current;
     }
 
     @Override
     public byte getAndBitwiseAndByteRelease(Object o, long offset, byte mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseAndByte(o, offset, mask);
     }
 
     @Override
     public byte getAndBitwiseAndByteAcquire(Object o, long offset, byte mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseAndByte(o, offset, mask);
     }
 
     @Override
     public byte getAndBitwiseXorByte(Object o, long offset, byte mask) {
-        throw new UnsupportedOperationException();
+        byte current;
+        do {
+            current = getByteVolatile(o, offset);
+        } while (!weakCompareAndSetByte(o, offset,
+                current, (byte) (current ^ mask)));
+        return current;
     }
 
     @Override
     public byte getAndBitwiseXorByteRelease(Object o, long offset, byte mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseXorByte(o, offset, mask);
     }
 
     @Override
     public byte getAndBitwiseXorByteAcquire(Object o, long offset, byte mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseXorByte(o, offset, mask);
     }
 
     @Override
     public char getAndBitwiseOrChar(Object o, long offset, char mask) {
-        throw new UnsupportedOperationException();
+        return (char) getAndBitwiseOrShort(o, offset, (short) mask);
     }
 
     @Override
     public char getAndBitwiseOrCharRelease(Object o, long offset, char mask) {
-        throw new UnsupportedOperationException();
+        return (char) getAndBitwiseOrShort(o, offset, (short) mask);
     }
 
     @Override
     public char getAndBitwiseOrCharAcquire(Object o, long offset, char mask) {
-        throw new UnsupportedOperationException();
+        return (char) getAndBitwiseOrShort(o, offset, (short) mask);
     }
 
     @Override
     public char getAndBitwiseAndChar(Object o, long offset, char mask) {
-        throw new UnsupportedOperationException();
+        return (char) getAndBitwiseAndShort(o, offset, (short) mask);
     }
 
     @Override
     public char getAndBitwiseAndCharRelease(Object o, long offset, char mask) {
-        throw new UnsupportedOperationException();
+        return (char) getAndBitwiseAndShort(o, offset, (short) mask);
     }
 
     @Override
     public char getAndBitwiseAndCharAcquire(Object o, long offset, char mask) {
-        throw new UnsupportedOperationException();
+        return (char) getAndBitwiseAndShort(o, offset, (short) mask);
     }
 
     @Override
     public char getAndBitwiseXorChar(Object o, long offset, char mask) {
-        throw new UnsupportedOperationException();
+        return (char) getAndBitwiseXorShort(o, offset, (short) mask);
     }
 
     @Override
     public char getAndBitwiseXorCharRelease(Object o, long offset, char mask) {
-        throw new UnsupportedOperationException();
+        return (char) getAndBitwiseXorShort(o, offset, (short) mask);
     }
 
     @Override
     public char getAndBitwiseXorCharAcquire(Object o, long offset, char mask) {
-        throw new UnsupportedOperationException();
+        return (char) getAndBitwiseXorShort(o, offset, (short) mask);
     }
 
     @Override
     public short getAndBitwiseOrShort(Object o, long offset, short mask) {
-        throw new UnsupportedOperationException();
+        short current;
+        do {
+            current = getShortVolatile(o, offset);
+        } while (!weakCompareAndSetShort(o, offset,
+                current, (short) (current | mask)));
+        return current;
     }
 
     @Override
     public short getAndBitwiseOrShortRelease(Object o, long offset, short mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseOrShort(o, offset, mask);
     }
 
     @Override
     public short getAndBitwiseOrShortAcquire(Object o, long offset, short mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseOrShort(o, offset, mask);
     }
 
     @Override
     public short getAndBitwiseAndShort(Object o, long offset, short mask) {
-        throw new UnsupportedOperationException();
+        short current;
+        do {
+            current = getShortVolatile(o, offset);
+        } while (!weakCompareAndSetShort(o, offset,
+                current, (short) (current & mask)));
+        return current;
     }
 
     @Override
     public short getAndBitwiseAndShortRelease(Object o, long offset, short mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseAndShort(o, offset, mask);
     }
 
     @Override
     public short getAndBitwiseAndShortAcquire(Object o, long offset, short mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseAndShort(o, offset, mask);
     }
 
     @Override
     public short getAndBitwiseXorShort(Object o, long offset, short mask) {
-        throw new UnsupportedOperationException();
+        short current;
+        do {
+            current = getShortVolatile(o, offset);
+        } while (!weakCompareAndSetShort(o, offset,
+                current, (short) (current ^ mask)));
+        return current;
     }
 
     @Override
     public short getAndBitwiseXorShortRelease(Object o, long offset, short mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseXorShort(o, offset, mask);
     }
 
     @Override
     public short getAndBitwiseXorShortAcquire(Object o, long offset, short mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseXorShort(o, offset, mask);
     }
 
     @Override
     public int getAndBitwiseOrInt(Object o, long offset, int mask) {
-        throw new UnsupportedOperationException();
+        int current;
+        do {
+            current = getIntVolatile(o, offset);
+        } while (!weakCompareAndSetInt(o, offset,
+                current, current | mask));
+        return current;
     }
 
     @Override
     public int getAndBitwiseOrIntRelease(Object o, long offset, int mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseOrInt(o, offset, mask);
     }
 
     @Override
     public int getAndBitwiseOrIntAcquire(Object o, long offset, int mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseOrInt(o, offset, mask);
     }
 
     @Override
     public int getAndBitwiseAndInt(Object o, long offset, int mask) {
-        throw new UnsupportedOperationException();
+        int current;
+        do {
+            current = getIntVolatile(o, offset);
+        } while (!weakCompareAndSetInt(o, offset,
+                current, current & mask));
+        return current;
     }
 
     @Override
     public int getAndBitwiseAndIntRelease(Object o, long offset, int mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseAndInt(o, offset, mask);
     }
 
     @Override
     public int getAndBitwiseAndIntAcquire(Object o, long offset, int mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseAndInt(o, offset, mask);
     }
 
     @Override
     public int getAndBitwiseXorInt(Object o, long offset, int mask) {
-        throw new UnsupportedOperationException();
+        int current;
+        do {
+            current = getIntVolatile(o, offset);
+        } while (!weakCompareAndSetInt(o, offset,
+                current, current ^ mask));
+        return current;
     }
 
     @Override
     public int getAndBitwiseXorIntRelease(Object o, long offset, int mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseXorInt(o, offset, mask);
     }
 
     @Override
     public int getAndBitwiseXorIntAcquire(Object o, long offset, int mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseXorInt(o, offset, mask);
     }
 
     @Override
     public long getAndBitwiseOrLong(Object o, long offset, long mask) {
-        throw new UnsupportedOperationException();
+        long current;
+        do {
+            current = getLongVolatile(o, offset);
+        } while (!weakCompareAndSetLong(o, offset,
+                current, current | mask));
+        return current;
     }
 
     @Override
     public long getAndBitwiseOrLongRelease(Object o, long offset, long mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseOrLong(o, offset, mask);
     }
 
     @Override
     public long getAndBitwiseOrLongAcquire(Object o, long offset, long mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseOrLong(o, offset, mask);
     }
 
     @Override
     public long getAndBitwiseAndLong(Object o, long offset, long mask) {
-        throw new UnsupportedOperationException();
+        long current;
+        do {
+            current = getLongVolatile(o, offset);
+        } while (!weakCompareAndSetLong(o, offset,
+                current, current & mask));
+        return current;
     }
 
     @Override
     public long getAndBitwiseAndLongRelease(Object o, long offset, long mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseAndLong(o, offset, mask);
     }
 
     @Override
     public long getAndBitwiseAndLongAcquire(Object o, long offset, long mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseAndLong(o, offset, mask);
     }
 
     @Override
     public long getAndBitwiseXorLong(Object o, long offset, long mask) {
-        throw new UnsupportedOperationException();
+        long current;
+        do {
+            current = getLongVolatile(o, offset);
+        } while (!weakCompareAndSetLong(o, offset,
+                current, current ^ mask));
+        return current;
     }
 
     @Override
     public long getAndBitwiseXorLongRelease(Object o, long offset, long mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseXorLong(o, offset, mask);
     }
 
     @Override
     public long getAndBitwiseXorLongAcquire(Object o, long offset, long mask) {
-        throw new UnsupportedOperationException();
+        return getAndBitwiseXorLong(o, offset, mask);
     }
 
     @Override
