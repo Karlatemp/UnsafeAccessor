@@ -17,7 +17,8 @@ public final class UnsafeAccess extends ProtectedObject {
     static final UnsafeAccess INSTANCE = new UnsafeAccess();
 
     public static UnsafeAccess getInstance() {
-        SecurityCheck.getInstance();
+        SecurityCheck.AccessLimiter accessLimiter = SecurityCheck.getInstance().getLimiter();
+        if (accessLimiter != null) accessLimiter.preGetUnsafeAccess();
         return INSTANCE;
     }
 

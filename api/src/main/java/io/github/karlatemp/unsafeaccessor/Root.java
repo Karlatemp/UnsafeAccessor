@@ -157,8 +157,8 @@ public class Root {
     @Contract(pure = false)
     public static <T> T throw0(Throwable throwable) {
         if (throwable == null) throw new NullPointerException();
-        getUnsafe().throwException(throwable);
-        throw new RuntimeException();
+        Unsafe.getUnsafe0().throwException(throwable);
+        throw new RuntimeException(throwable);
     }
 
     /**
