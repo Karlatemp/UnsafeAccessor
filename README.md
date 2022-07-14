@@ -8,7 +8,7 @@ UnsafeAccessor is available on MavenCentral
 
 ```groovy
 dependencies {
-    compile("io.github.karlatemp:unsafe-accessor:1.6.2")
+    compile("io.github.karlatemp:unsafe-accessor:1.7.0")
 }
 ```
 
@@ -16,7 +16,7 @@ dependencies {
 <dependency>
   <groupId>io.github.karlatemp</groupId>
   <artifactId>unsafe-accessor</artifactId>
-  <version>1.6.1</version>
+  <version>1.7.0</version>
 </dependency>
 ```
 
